@@ -103,7 +103,8 @@
 #define ESP32_RST_PIN          GPIO_PIN_0
 #define ESP32_RST_PORT         GPIOD
 #define ESP32_UART_HANDEL      huart3
-
+#define USART3_RX_Pin          GPIO_PIN_9
+#define USART3_TX_Pin          GPIO_PIN_8
 /* Module special parameters */
 
 
