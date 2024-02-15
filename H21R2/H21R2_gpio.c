@@ -20,14 +20,35 @@ BOS_Status GetPortGPIOs(uint8_t port,uint32_t *TX_Port,uint16_t *TX_Pin,uint32_t
 /** Pinout Configuration
  */
 void GPIO_Init(void){
-	/* GPIO Ports Clock Enable */
-	__GPIOC_CLK_ENABLE();
-	__GPIOA_CLK_ENABLE();
-	__GPIOD_CLK_ENABLE();
-	__GPIOB_CLK_ENABLE();
-	__GPIOF_CLK_ENABLE();		// for HSE and Boot0
-	
-	IND_LED_Init();
+	  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+	  /* GPIO Ports Clock Enable */
+	  __HAL_RCC_GPIOC_CLK_ENABLE();
+	  __HAL_RCC_GPIOF_CLK_ENABLE();
+	  __HAL_RCC_GPIOB_CLK_ENABLE();
+	  __HAL_RCC_GPIOD_CLK_ENABLE();
+
+	  IND_LED_Init();
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(ESP32_BOOT_PORT, ESP32_BOOT_PIN, GPIO_PIN_SET);
+
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_SET);
+
+	  /*Configure GPIO pin : ESP32_BOOT_PIN */
+	  GPIO_InitStruct.Pin = ESP32_BOOT_PIN;
+	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	  HAL_GPIO_Init(ESP32_BOOT_PORT, &GPIO_InitStruct);
+
+	  /*Configure GPIO pin : ESP32_RST_PIN */
+	  GPIO_InitStruct.Pin = ESP32_RST_PIN;
+	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	  HAL_GPIO_Init(ESP32_RST_PORT, &GPIO_InitStruct);
+
 }
 
 //-- Configure indicator LED

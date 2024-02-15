@@ -1,0 +1,4 @@
+..\..\H21R2\H21R2_gpio.c:22:6:GPIO_Init	1
+..\..\H21R2\H21R2_gpio.c:55:6:IND_LED_Init	1
+..\..\H21R2\H21R2_gpio.c:70:9:IsFactoryReset	3
+..\..\H21R2\H21R2_gpio.c:121:12:GetPortGPIOs	6

@@ -91,10 +91,23 @@
 
 /* Module-specific Definitions */
 
-#define NUM_MODULE_PARAMS						1
+/* Indicator LED */
+#define _IND_LED_PORT			GPIOB
+#define _IND_LED_PIN			GPIO_PIN_15
+
+#define NUM_MODULE_PARAMS		1
+
+/* Module GPIO Pinout */
+#define ESP32_BOOT_PIN         GPIO_PIN_13
+#define ESP32_BOOT_PORT        GPIOC
+#define ESP32_RST_PIN          GPIO_PIN_0
+#define ESP32_RST_PORT         GPIOD
+#define ESP32_UART_HANDEL      huart3
+
+/* Module special parameters */
+
 
 /* Module EEPROM Variables */
-
 // Module Addressing Space 500 - 599
 #define _EE_MODULE							500		
 
@@ -105,10 +118,6 @@ typedef enum {
 	H21R2_ERR_WrongParams,
 	H21R2_ERROR =255
 } Module_Status;
-
-/* Indicator LED */
-#define _IND_LED_PORT			GPIOB
-#define _IND_LED_PIN			GPIO_PIN_14
 
 /* Export UART variables */
 extern UART_HandleTypeDef huart1;
