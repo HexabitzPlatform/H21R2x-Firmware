@@ -1,0 +1,9 @@
+..\..\H21R2\H21R2.c:64:6:SystemClock_Config	1
+..\..\H21R2\H21R2.c:114:9:SaveToRO	14
+..\..\H21R2\H21R2.c:219:9:ClearROtopology	1
+..\..\H21R2\H21R2.c:231:6:remoteBootloaderUpdate	7
+..\..\H21R2\H21R2.c:283:6:SetupPortForRemoteBootloaderUpdate	1
+..\..\H21R2\H21R2.c:297:6:Module_Peripheral_Init	8
+..\..\H21R2\H21R2.c:331:15:Module_MessagingTask	1
+..\..\H21R2\H21R2.c:346:9:GetPort	6
+..\..\H21R2\H21R2.c:367:6:RegisterModuleCLICommands	1
