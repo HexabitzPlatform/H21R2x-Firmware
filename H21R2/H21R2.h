@@ -93,7 +93,7 @@
 
 /* Indicator LED */
 #define _IND_LED_PORT			GPIOB
-#define _IND_LED_PIN			GPIO_PIN_15
+#define _IND_LED_PIN			GPIO_PIN_14
 
 #define NUM_MODULE_PARAMS		1
 

@@ -6,9 +6,9 @@
 ..\..\H21R2\H21R2_it.c:101:6:USART3_4_5_6_LPUART1_IRQHandler	2
 ..\..\H21R2\H21R2_it.c:128:6:DMA1_Ch1_IRQHandler	1
 ..\..\H21R2\H21R2_it.c:139:6:DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler	4
-..\..\H21R2\H21R2_it.c:159:6:DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler	6
-..\..\H21R2\H21R2_it.c:184:6:HAL_UART_TxCpltCallback	2
-..\..\H21R2\H21R2_it.c:197:6:HAL_UART_ErrorCallback	2
-..\..\H21R2\H21R2_it.c:220:6:HAL_UART_RxCpltCallback	1
-..\..\H21R2\H21R2_it.c:303:6:vApplicationStackOverflowHook	0
-..\..\H21R2\H21R2_it.c:325:6:vApplicationMallocFailedHook	0
+..\..\H21R2\H21R2_it.c:158:6:DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler	6
+..\..\H21R2\H21R2_it.c:183:6:HAL_UART_TxCpltCallback	2
+..\..\H21R2\H21R2_it.c:196:6:HAL_UART_ErrorCallback	2
+..\..\H21R2\H21R2_it.c:219:6:HAL_UART_RxCpltCallback	1
+..\..\H21R2\H21R2_it.c:302:6:vApplicationStackOverflowHook	0
+..\..\H21R2\H21R2_it.c:324:6:vApplicationMallocFailedHook	0
