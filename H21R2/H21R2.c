@@ -402,7 +402,7 @@ void RegisterModuleCLICommands(void){
  |								  APIs							          | 																 	|
 /* -----------------------------------------------------------------------
  */
-void ESP_Reset(void)
+void ESP_ResetMode(void)
 {
 	  /* RESET pin fpr esp32 */
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_RESET);
@@ -410,7 +410,7 @@ void ESP_Reset(void)
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_SET);
 }
 
-void ESP_Boot(void)
+void ESP_BootMode(void)
 {
 	  /* BOOT pin for esp32 */
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
@@ -419,6 +419,19 @@ void ESP_Boot(void)
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_SET);
 	HAL_Delay(100);
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
+}
+void ESP_ClientMode(char* ClientName,char* ServerName)
+{
+	int LenClientName,LenServerName;
+	LenClientName = strlen(ClientName);
+	LenServerName = strlen(ServerName);
+	uint8_t Data[LenClientName+LenServerName+3];
+	Data[0] = CLIENT_MODE;
+	Data[1]=LenClientName;
+	Data[2]=LenServerName;
+	memcpy(&Data[3], ClientName, LenClientName);
+	memcpy(&Data[LenClientName+3], ServerName, LenServerName);
+	HAL_UART_Transmit(&huart3, Data, LenClientName+LenServerName+3, 0xff);
 }
 
 /*-----------------------------------------------------------*/

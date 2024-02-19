@@ -106,7 +106,7 @@
 #define USART3_RX_Pin          GPIO_PIN_9
 #define USART3_TX_Pin          GPIO_PIN_8
 /* Module special parameters */
-
+#define CLIENT_MODE                1
 
 /* Module EEPROM Variables */
 // Module Addressing Space 500 - 599
@@ -145,8 +145,9 @@ extern void ExecuteMonitor(void);
 
 void SetupPortForRemoteBootloaderUpdate(uint8_t port);
 void remoteBootloaderUpdate(uint8_t src,uint8_t dst,uint8_t inport,uint8_t outport);
-void ESP_Reset(void);
-void ESP_Boot(void);
+void ESP_ResetMode(void);
+void ESP_BootMode(void);
+void ESP_ClientMode(char* Client_Name,char* Server_Name);
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
 /* -----------------------------------------------------------------------
