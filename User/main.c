@@ -23,12 +23,19 @@ int main(void){
 }
 
 /*-----------------------------------------------------------*/
-
+char d[8]={"abcdefg"};
+uint8_t g[8] ;
 /* User Task */
 void UserTask(void *argument){
 
-//	ESP_Boot();
-//	ESP_Reset();
+	ESP_Boot();
+	ESP_Reset();
+		 MX_USART3_UART_Init();
+	HAL_Delay(1000);
+	g[0]=2;
+	memcpy(&g[1], &d[0], 8);
+
+	 HAL_UART_Transmit(&huart3, &g, 8, 0xff);
 	// put your code here, to run repeatedly.
 	while(1){
 

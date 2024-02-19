@@ -7,3 +7,5 @@
 ..\..\H21R2\H21R2.c:331:15:Module_MessagingTask	1
 ..\..\H21R2\H21R2.c:346:9:GetPort	6
 ..\..\H21R2\H21R2.c:367:6:RegisterModuleCLICommands	1
+..\..\H21R2\H21R2.c:405:6:ESP_Reset	1
+..\..\H21R2\H21R2.c:413:6:ESP_Boot	1

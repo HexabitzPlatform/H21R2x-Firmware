@@ -299,7 +299,7 @@ void Module_Peripheral_Init(void){
 	/* Array ports */
 	MX_USART1_UART_Init();
 	MX_USART2_UART_Init();
-//	MX_USART3_UART_Init();
+//	MX_USART3_UART_Init();             //initialization after ESP_Boot();
 	MX_USART4_UART_Init();
 	MX_USART5_UART_Init();
 	MX_USART6_UART_Init();
@@ -402,7 +402,24 @@ void RegisterModuleCLICommands(void){
  |								  APIs							          | 																 	|
 /* -----------------------------------------------------------------------
  */
+void ESP_Reset(void)
+{
+	  /* RESET pin fpr esp32 */
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_RESET);
+	HAL_Delay(5);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_SET);
+}
 
+void ESP_Boot(void)
+{
+	  /* BOOT pin for esp32 */
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_RESET);
+	HAL_Delay(100);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_SET);
+	HAL_Delay(100);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
+}
 
 /*-----------------------------------------------------------*/
 
