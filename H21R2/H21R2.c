@@ -434,6 +434,17 @@ void ESP_ClientMode(char* ClientName,char* ServerName)
 	HAL_UART_Transmit(&huart3, Data, LenClientName+LenServerName+3, 0xff);
 }
 
+void ESP_ServerMode(char* ServerName)
+{
+	int LenClientName,LenServerName;
+	LenServerName = strlen(ServerName);
+	uint8_t Data[LenServerName+2];
+  	Data[0] = SERVER_MODE;
+	Data[1]=LenServerName;
+	memcpy(&Data[2], ServerName, LenServerName);
+	HAL_UART_Transmit(&huart3, Data, LenServerName+2, 0xff);
+}
+
 /*-----------------------------------------------------------*/
 
 

@@ -107,7 +107,7 @@
 #define USART3_TX_Pin          GPIO_PIN_8
 /* Module special parameters */
 #define CLIENT_MODE                1
-
+#define SERVER_MODE                2
 /* Module EEPROM Variables */
 // Module Addressing Space 500 - 599
 #define _EE_MODULE							500		
@@ -148,6 +148,7 @@ void remoteBootloaderUpdate(uint8_t src,uint8_t dst,uint8_t inport,uint8_t outpo
 void ESP_ResetMode(void);
 void ESP_BootMode(void);
 void ESP_ClientMode(char* Client_Name,char* Server_Name);
+void ESP_ServerMode(char* ServerName);
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
 /* -----------------------------------------------------------------------

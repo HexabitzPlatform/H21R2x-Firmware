@@ -24,16 +24,17 @@ int main(void){
 
 /*-----------------------------------------------------------*/
 char cl[8]={"mahmood"};
-char ser[8]={"reda"};
+char ser[20]={"mahmoodreda"};
+
 /* User Task */
 void UserTask(void *argument){
-
+//
 	ESP_BootMode();
 	ESP_ResetMode();
 	MX_USART3_UART_Init();
 	HAL_Delay(1000);
+	ESP_ServerMode(ser);
 
-	ESP_ClientMode(cl, ser);
 
 	// put your code here, to run repeatedly.
 	while(1){
