@@ -106,9 +106,12 @@
 #define USART3_RX_Pin          GPIO_PIN_9
 #define USART3_TX_Pin          GPIO_PIN_8
 /* Module special parameters */
+
 #define CLIENT_MODE                1
 #define SERVER_MODE                2
 #define WIFI_ACCESS_POINT_MODE     3
+#define WIFI_STATION_MODE          4
+
 /* Module EEPROM Variables */
 // Module Addressing Space 500 - 599
 #define _EE_MODULE							500		
@@ -151,6 +154,7 @@ void ESP_BootMode(void);
 void ESP_ClientMode(char* Client_Name,char* Server_Name);
 void ESP_ServerMode(char* ServerName);
 void ESP_WifiAccessPoint(char* Ssid,char* Password);
+void ESP_WifiStation(char* Ssid,char* Password);
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
 /* -----------------------------------------------------------------------

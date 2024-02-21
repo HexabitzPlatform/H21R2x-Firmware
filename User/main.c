@@ -23,8 +23,8 @@ int main(void){
 }
 
 /*-----------------------------------------------------------*/
-char ssi[20]={"MahmoodReda"};
-char pas[20]={"123456789"};
+char ssi[50]={"DESKTOP-72Q66QF 7257"};
+char pas[20]={"00000000"};
 
 /* User Task */
 void UserTask(void *argument){
@@ -34,7 +34,7 @@ void UserTask(void *argument){
 	MX_USART3_UART_Init();
 	HAL_Delay(1000);
 //	ESP_ServerMode(ser);
-	ESP_WifiAccessPoint(sii, pas);
+	ESP_WifiStation(ssi, pas);
 
 
 	// put your code here, to run repeatedly.
