@@ -108,6 +108,7 @@
 /* Module special parameters */
 #define CLIENT_MODE                1
 #define SERVER_MODE                2
+#define WIFI_ACCESS_POINT_MODE     3
 /* Module EEPROM Variables */
 // Module Addressing Space 500 - 599
 #define _EE_MODULE							500		
@@ -149,6 +150,7 @@ void ESP_ResetMode(void);
 void ESP_BootMode(void);
 void ESP_ClientMode(char* Client_Name,char* Server_Name);
 void ESP_ServerMode(char* ServerName);
+void ESP_WifiAccessPoint(char* Ssid,char* Password);
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
 /* -----------------------------------------------------------------------

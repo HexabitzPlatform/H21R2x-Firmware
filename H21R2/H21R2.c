@@ -436,13 +436,29 @@ void ESP_ClientMode(char* ClientName,char* ServerName)
 
 void ESP_ServerMode(char* ServerName)
 {
-	int LenClientName,LenServerName;
+	int LenServerName;
 	LenServerName = strlen(ServerName);
 	uint8_t Data[LenServerName+2];
   	Data[0] = SERVER_MODE;
 	Data[1]=LenServerName;
 	memcpy(&Data[2], ServerName, LenServerName);
 	HAL_UART_Transmit(&huart3, Data, LenServerName+2, 0xff);
+}
+
+void ESP_WifiAccessPoint(char* Ssid,char* Password)
+{
+	int LenSsid,LenPassword;
+	LenSsid = strlen(Ssid);
+	LenPassword = strlen(Password);
+	uint8_t Data[LenSsid+LenPassword+3];
+  	Data[0] = WIFI_ACCESS_POINT_MODE;
+	Data[1]=LenSsid;
+	Data[2]=LenPassword;
+	memcpy(&Data[3], Ssid, LenSsid);
+	memcpy(&Data[LenSsid+3], Password, LenPassword);
+	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
+	Delay_ms(200);
+	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
 }
 
 /*-----------------------------------------------------------*/
