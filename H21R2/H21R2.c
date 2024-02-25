@@ -408,6 +408,7 @@ void ESP_ResetMode(void)
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_RESET);
 	HAL_Delay(5);
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_SET);
+
 }
 
 void ESP_BootMode(void)
@@ -443,6 +444,10 @@ void ESP_ServerMode(char* ServerName)
 	Data[1]=LenServerName;
 	memcpy(&Data[2], ServerName, LenServerName);
 	HAL_UART_Transmit(&huart3, Data, LenServerName+2, 0xff);
+}
+void ESP_ReadFromServer(uint8_t * Data)
+{
+	HAL_UART_Receive_DMA(&huart3, Data, SIZEBUF);
 }
 
 void ESP_WifiAccessPoint(char* Ssid,char* Password)

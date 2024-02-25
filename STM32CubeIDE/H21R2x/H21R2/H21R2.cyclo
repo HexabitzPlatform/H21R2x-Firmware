@@ -8,8 +8,9 @@
 ..\..\H21R2\H21R2.c:346:9:GetPort	6
 ..\..\H21R2\H21R2.c:367:6:RegisterModuleCLICommands	1
 ..\..\H21R2\H21R2.c:405:6:ESP_ResetMode	1
-..\..\H21R2\H21R2.c:413:6:ESP_BootMode	1
-..\..\H21R2\H21R2.c:423:6:ESP_ClientMode	1
-..\..\H21R2\H21R2.c:437:6:ESP_ServerMode	1
-..\..\H21R2\H21R2.c:448:6:ESP_WifiAccessPoint	1
-..\..\H21R2\H21R2.c:464:6:ESP_WifiStation	1
+..\..\H21R2\H21R2.c:414:6:ESP_BootMode	1
+..\..\H21R2\H21R2.c:424:6:ESP_ClientMode	1
+..\..\H21R2\H21R2.c:438:6:ESP_ServerMode	1
+..\..\H21R2\H21R2.c:448:6:ESP_ReadFromServer	1
+..\..\H21R2\H21R2.c:453:6:ESP_WifiAccessPoint	1
+..\..\H21R2\H21R2.c:469:6:ESP_WifiStation	1
