@@ -25,23 +25,22 @@ int main(void){
 /*-----------------------------------------------------------*/
 //char ssi[50]={"DESKTOP-72Q66QF 7257"};
 //char pas[20]={"00000000"};
-uint8_t Data[60];
-
+char Data[20]={"1da1w"};
+uint8_t k[40];
 /* User Task */
 void UserTask(void *argument){
 
 	ESP_BootMode();
-    ESP_ResetMode();
-    HAL_Delay(2000);
+	ESP_ResetMode();
 	MX_USART3_UART_Init();
-	ESP_ReadFromServer(Data);
-	HAL_Delay(2000);
+	HAL_Delay(1000);
 	ESP_ServerMode("mreda");
-
 
 
 	// put your code here, to run repeatedly.
 	while(1){
+		ESP_ReadFromServer(k);
+		ESP_WriteToServer(Data);
 
 	}
 }

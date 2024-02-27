@@ -101,9 +101,9 @@ void USART2_LPUART2_IRQHandler(void){
 void USART3_4_5_6_LPUART1_IRQHandler(void){
 	portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 	
-#if defined (_Usart3)
+//#if defined (_Usart3)
 	HAL_UART_IRQHandler(&huart3);
-#endif
+//#endif
 #if defined (_Usart4)
 	HAL_UART_IRQHandler(&huart4);
 #endif

@@ -32,7 +32,7 @@ extern uint8_t numOfRecordedSnippets;
 module_param_t modParam[NUM_MODULE_PARAMS] ={{.paramPtr = NULL, .paramFormat =FMT_FLOAT, .paramName =""}};
 
 /* Private variables ---------------------------------------------------------*/
-
+uint8_t FullData[20];
 
 /* Private function prototypes -----------------------------------------------*/
 void ExecuteMonitor(void);
@@ -444,10 +444,32 @@ void ESP_ServerMode(char* ServerName)
 	Data[1]=LenServerName;
 	memcpy(&Data[2], ServerName, LenServerName);
 	HAL_UART_Transmit(&huart3, Data, LenServerName+2, 0xff);
+	HAL_UART_Receive_DMA(&huart3, FullData, SIZEBUF);
+
 }
+
 void ESP_ReadFromServer(uint8_t * Data)
-{
-	HAL_UART_Receive_DMA(&huart3, Data, SIZEBUF);
+ {
+
+	if ('H' == FullData[1] && 'Z' == FullData[2]) {
+
+		memcpy(Data, &FullData[3], 18);
+
+	}
+}
+
+void ESP_WriteToServer(char* Data)
+ {
+	int LenData;
+	LenData = strlen(Data);
+	uint8_t SendData[LenData + 2];
+	SendData[0] = WRITE_TO_SERVER_MODE;
+	SendData[1] = LenData;
+	memcpy(&SendData[2], Data, LenData);
+	if (1 ==FullData[1]) {
+		HAL_UART_Transmit(&huart3, SendData, LenData + 2, 0xff);
+		FullData[1]=0;
+	}
 }
 
 void ESP_WifiAccessPoint(char* Ssid,char* Password)

@@ -111,7 +111,7 @@
 #define SERVER_MODE                2
 #define WIFI_ACCESS_POINT_MODE     3
 #define WIFI_STATION_MODE          4
-
+#define WRITE_TO_SERVER_MODE       5
 /* Module EEPROM Variables */
 // Module Addressing Space 500 - 599
 #define _EE_MODULE							500		
@@ -156,6 +156,7 @@ void ESP_ServerMode(char* ServerName);
 void ESP_WifiAccessPoint(char* Ssid,char* Password);
 void ESP_WifiStation(char* Ssid,char* Password);
 void ESP_ReadFromServer(uint8_t * Data);
+void ESP_WriteToServer(char* Data) ;
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
 /* -----------------------------------------------------------------------
