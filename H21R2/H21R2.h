@@ -124,6 +124,11 @@ typedef enum {
 	H21R2_ERROR =255
 } Module_Status;
 
+typedef enum {
+	server=0,
+	client,
+
+}BLE_MODE;
 /* Export UART variables */
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
@@ -155,8 +160,8 @@ void ESP_ClientMode(char* Client_Name,char* Server_Name);
 void ESP_ServerMode(char* ServerName);
 void ESP_WifiAccessPoint(char* Ssid,char* Password);
 void ESP_WifiStation(char* Ssid,char* Password);
-void ESP_ReadFromServer(uint8_t * Data);
-void ESP_WriteToServer(char* Data) ;
+void ESP_BleRead(uint8_t * Data,BLE_MODE function);
+void ESP_BleWrite(char* Data ,BLE_MODE function) ;
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
 /* -----------------------------------------------------------------------

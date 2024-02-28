@@ -33,7 +33,8 @@ module_param_t modParam[NUM_MODULE_PARAMS] ={{.paramPtr = NULL, .paramFormat =FM
 
 /* Private variables ---------------------------------------------------------*/
 uint8_t FullData[20];
-
+uint64_t Timeout = 0;
+uint64_t Time = 0;
 /* Private function prototypes -----------------------------------------------*/
 void ExecuteMonitor(void);
 
@@ -433,6 +434,7 @@ void ESP_ClientMode(char* ClientName,char* ServerName)
 	memcpy(&Data[3], ClientName, LenClientName);
 	memcpy(&Data[LenClientName+3], ServerName, LenServerName);
 	HAL_UART_Transmit(&huart3, Data, LenClientName+LenServerName+3, 0xff);
+	HAL_UART_Receive_DMA(&huart3, FullData, SIZEBUF);
 }
 
 void ESP_ServerMode(char* ServerName)
@@ -448,7 +450,7 @@ void ESP_ServerMode(char* ServerName)
 
 }
 
-void ESP_ReadFromServer(uint8_t * Data)
+void ESP_BleRead(uint8_t * Data,BLE_MODE function )
  {
 
 	if ('H' == FullData[1] && 'Z' == FullData[2]) {
@@ -458,18 +460,38 @@ void ESP_ReadFromServer(uint8_t * Data)
 	}
 }
 
-void ESP_WriteToServer(char* Data)
+
+void ESP_BleWrite(char* Data,BLE_MODE function)
  {
+
 	int LenData;
 	LenData = strlen(Data);
 	uint8_t SendData[LenData + 2];
-	SendData[0] = WRITE_TO_SERVER_MODE;
-	SendData[1] = LenData;
-	memcpy(&SendData[2], Data, LenData);
-	if (1 ==FullData[1]) {
-		HAL_UART_Transmit(&huart3, SendData, LenData + 2, 0xff);
-		FullData[1]=0;
+	switch (function) {
+	case server:
+		SendData[0] = WRITE_TO_SERVER_MODE;
+		SendData[1] = LenData;
+		memcpy(&SendData[2], Data, LenData);
+		if (1 == FullData[1]) {
+			HAL_UART_Transmit(&huart3, SendData, LenData + 2, 0xff);
+			FullData[1] = 0;
+		}
+		break;
+	case client:
+		SendData[0] = 6;
+		SendData[1] = LenData;
+		memcpy(&SendData[2], Data, LenData);
+		if (1 == FullData[1]) {
+			Timeout = HAL_GetTick();
+			FullData[1] = 0;
+		}
+		Time = HAL_GetTick();
+		if (Time - Timeout >= 2000) {
+			HAL_UART_Transmit(&huart3, SendData, LenData + 2, 0xff);
+		}
+		break;
 	}
+
 }
 
 void ESP_WifiAccessPoint(char* Ssid,char* Password)
