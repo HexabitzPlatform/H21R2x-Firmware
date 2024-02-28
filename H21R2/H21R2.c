@@ -452,11 +452,28 @@ void ESP_ServerMode(char* ServerName)
 
 void ESP_BleRead(uint8_t * Data,BLE_MODE function )
  {
+	switch (function) {
+	case server:
 
-	if ('H' == FullData[1] && 'Z' == FullData[2]) {
+		if ('H' == FullData[1] && 'Z' == FullData[2]) {
 
-		memcpy(Data, &FullData[3], 18);
+			memcpy(Data, &FullData[3], 18);
 
+		}
+		break;
+	case client:
+		uint8_t SendData;
+		SendData = WRITE_FROM_CLIENT_MODE;
+		if (1 == FullData[1]) {
+			HAL_UART_Transmit(&huart3, &SendData, 1, 0xff);
+			FullData[1] = 0;
+		}
+		if ('H' == FullData[1] && 'Z' == FullData[2]) {
+			do {
+				memcpy(Data, &FullData[3], 18);
+			} while (1 != FullData[1]);
+		}
+		break;
 	}
 }
 
@@ -478,16 +495,15 @@ void ESP_BleWrite(char* Data,BLE_MODE function)
 		}
 		break;
 	case client:
-		SendData[0] = 6;
+		SendData[0] = WRITE_TO_CLIENT_MODE;
 		SendData[1] = LenData;
 		memcpy(&SendData[2], Data, LenData);
 		if (1 == FullData[1]) {
-			Timeout = HAL_GetTick();
-			FullData[1] = 0;
-		}
-		Time = HAL_GetTick();
-		if (Time - Timeout >= 2000) {
 			HAL_UART_Transmit(&huart3, SendData, LenData + 2, 0xff);
+			FullData[1] = 0;
+			do {
+
+			} while (1 != FullData[1]);
 		}
 		break;
 	}

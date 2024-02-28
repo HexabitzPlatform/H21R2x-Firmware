@@ -112,6 +112,9 @@
 #define WIFI_ACCESS_POINT_MODE     3
 #define WIFI_STATION_MODE          4
 #define WRITE_TO_SERVER_MODE       5
+#define WRITE_TO_CLIENT_MODE       6
+#define WRITE_FROM_CLIENT_MODE     7
+
 /* Module EEPROM Variables */
 // Module Addressing Space 500 - 599
 #define _EE_MODULE							500		
