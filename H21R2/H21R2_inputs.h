@@ -1,8 +1,8 @@
 /*
- BitzOS (BOS) V0.2.9 - Copyright (C) 2017-2023 Hexabitz
+ BitzOS (BOS) V0.3.1 - Copyright (C) 2017-2024 Hexabitz
  All rights reserved
 
- File Name     : BOS_inputs.h
+ File Name     : H21R2_inputs.h
  Description   : header file for Bitz digital and analog inputs.
  
  */
