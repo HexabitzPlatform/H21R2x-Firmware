@@ -409,7 +409,7 @@ void ESP_ResetMode(void)
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_RESET);
 	HAL_Delay(5);
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_SET);
-
+	HAL_Delay(1000);
 }
 
 void ESP_BootMode(void)
@@ -424,6 +424,7 @@ void ESP_BootMode(void)
 }
 void ESP_ClientMode(char* ClientName,char* ServerName)
 {
+	MX_USART3_UART_Init();
 	int LenClientName,LenServerName;
 	LenClientName = strlen(ClientName);
 	LenServerName = strlen(ServerName);
@@ -439,6 +440,7 @@ void ESP_ClientMode(char* ClientName,char* ServerName)
 
 void ESP_ServerMode(char* ServerName)
 {
+	MX_USART3_UART_Init();
 	int LenServerName;
 	LenServerName = strlen(ServerName);
 	uint8_t Data[LenServerName+2];
@@ -455,24 +457,27 @@ void ESP_BleRead(uint8_t * Data,BLE_MODE function )
 	switch (function) {
 	case server:
 
-		if ('H' == FullData[1] && 'Z' == FullData[2]) {
+		if ('H' == FullData[0] && 'Z' == FullData[1]) {
 
-			memcpy(Data, &FullData[3], 18);
+			memcpy(Data, &FullData[2], 18);
 
 		}
 		break;
 	case client:
 		uint8_t SendData;
 		SendData = WRITE_FROM_CLIENT_MODE;
-		if (1 == FullData[1]) {
+		if (1 == FullData[0]) {
 			HAL_UART_Transmit(&huart3, &SendData, 1, 0xff);
-			FullData[1] = 0;
+			FullData[0] = 0;
 		}
-		if ('H' == FullData[1] && 'Z' == FullData[2]) {
+		if ('H' == FullData[0] && 'Z' == FullData[1]) {
 			do {
 				memcpy(Data, &FullData[3], 18);
-			} while (1 != FullData[1]);
+
+			} while (1 != FullData[0]);
+			HAL_Delay(100);
 		}
+
 		break;
 	}
 }
@@ -489,22 +494,23 @@ void ESP_BleWrite(char* Data,BLE_MODE function)
 		SendData[0] = WRITE_TO_SERVER_MODE;
 		SendData[1] = LenData;
 		memcpy(&SendData[2], Data, LenData);
-		if (1 == FullData[1]) {
+		if (1 == FullData[0]) {
 			HAL_UART_Transmit(&huart3, SendData, LenData + 2, 0xff);
-			FullData[1] = 0;
+			FullData[0] = 0;
 		}
 		break;
 	case client:
 		SendData[0] = WRITE_TO_CLIENT_MODE;
 		SendData[1] = LenData;
 		memcpy(&SendData[2], Data, LenData);
-		if (1 == FullData[1]) {
+		if (1 == FullData[0]) {
 			HAL_UART_Transmit(&huart3, SendData, LenData + 2, 0xff);
-			FullData[1] = 0;
+			FullData[0] = 0;
 			do {
 
-			} while (1 != FullData[1]);
+			} while (1 != FullData[0]);
 		}
+		HAL_Delay(100);
 		break;
 	}
 
@@ -512,6 +518,7 @@ void ESP_BleWrite(char* Data,BLE_MODE function)
 
 void ESP_WifiAccessPoint(char* Ssid,char* Password)
 {
+	MX_USART3_UART_Init();
 	int LenSsid,LenPassword;
 	LenSsid = strlen(Ssid);
 	LenPassword = strlen(Password);
@@ -528,6 +535,7 @@ void ESP_WifiAccessPoint(char* Ssid,char* Password)
 
 void ESP_WifiStation(char* Ssid,char* Password)
 {
+	MX_USART3_UART_Init();
 	int LenSsid,LenPassword;
 	LenSsid = strlen(Ssid);
 	LenPassword = strlen(Password);

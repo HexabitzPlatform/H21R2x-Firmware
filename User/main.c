@@ -31,17 +31,15 @@ void UserTask(void *argument){
 
 	ESP_BootMode();
  	ESP_ResetMode();
-	MX_USART3_UART_Init();
-	HAL_Delay(1000);
+
     ESP_ClientMode("Reda", "Reda");
-
-	// put your code here, to run repeatedly.
+//	ESP_ServerMode("Reda");
+//	 put your code here, to run repeatedly.
 	while(1){
-//		ESP_BleWrite(Data, client);
-//		memset(k, 0, sizeof(k));
+		ESP_BleWrite(Data, client);
 		ESP_BleRead(k, client);
-//		x++;
-
+//		ESP_BleWrite(Data, server);
+//		ESP_BleRead(k, server);
 	}
 }
 

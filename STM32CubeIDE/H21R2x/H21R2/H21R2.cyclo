@@ -10,8 +10,8 @@
 ..\..\H21R2\H21R2.c:406:6:ESP_ResetMode	1
 ..\..\H21R2\H21R2.c:415:6:ESP_BootMode	1
 ..\..\H21R2\H21R2.c:425:6:ESP_ClientMode	1
-..\..\H21R2\H21R2.c:440:6:ESP_ServerMode	1
-..\..\H21R2\H21R2.c:453:6:ESP_BleRead	9
-..\..\H21R2\H21R2.c:481:6:ESP_BleWrite	6
-..\..\H21R2\H21R2.c:513:6:ESP_WifiAccessPoint	1
-..\..\H21R2\H21R2.c:529:6:ESP_WifiStation	1
+..\..\H21R2\H21R2.c:441:6:ESP_ServerMode	1
+..\..\H21R2\H21R2.c:455:6:ESP_BleRead	9
+..\..\H21R2\H21R2.c:486:6:ESP_BleWrite	6
+..\..\H21R2\H21R2.c:519:6:ESP_WifiAccessPoint	1
+..\..\H21R2\H21R2.c:536:6:ESP_WifiStation	1
