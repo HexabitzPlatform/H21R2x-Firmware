@@ -40,6 +40,8 @@ void ExecuteMonitor(void);
 
 /* Create CLI commands --------------------------------------------------------*/
 
+
+
 /*-----------------------------------------------------------*/
 
 /* -----------------------------------------------------------------------
@@ -403,18 +405,20 @@ void RegisterModuleCLICommands(void){
  |								  APIs							          | 																 	|
 /* -----------------------------------------------------------------------
  */
-void ESP_ResetMode(void)
+Module_Status ESP_ResetMode(void)
 {
 	  /* RESET pin fpr esp32 */
+	Module_Status Status = H21R2_OK;
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_RESET);
 	HAL_Delay(5);
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_SET);
 	HAL_Delay(1000);
 }
 
-void ESP_BootMode(void)
+Module_Status ESP_BootMode(void)
 {
 	  /* BOOT pin for esp32 */
+	Module_Status Status = H21R2_OK;
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_RESET);
 	HAL_Delay(100);
@@ -422,24 +426,27 @@ void ESP_BootMode(void)
 	HAL_Delay(100);
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
 }
-void ESP_ClientMode(char* ClientName,char* ServerName)
-{
+Module_Status ESP_ClientMode(char* ClientName,char* ServerName)
+ {
+	Module_Status Status = H21R2_ERROR;
 	MX_USART3_UART_Init();
-	int LenClientName,LenServerName;
+	int LenClientName, LenServerName;
 	LenClientName = strlen(ClientName);
 	LenServerName = strlen(ServerName);
-	uint8_t Data[LenClientName+LenServerName+3];
+	uint8_t Data[LenClientName + LenServerName + 3];
 	Data[0] = CLIENT_MODE;
-	Data[1]=LenClientName;
-	Data[2]=LenServerName;
+	Data[1] = LenClientName;
+	Data[2] = LenServerName;
 	memcpy(&Data[3], ClientName, LenClientName);
-	memcpy(&Data[LenClientName+3], ServerName, LenServerName);
-	HAL_UART_Transmit(&huart3, Data, LenClientName+LenServerName+3, 0xff);
+	memcpy(&Data[LenClientName + 3], ServerName, LenServerName);
+	HAL_UART_Transmit(&huart3, Data, LenClientName + LenServerName + 3, 0xff);
 	HAL_UART_Receive_DMA(&huart3, FullData, SIZEBUF);
+	Status = H21R2_OK;
 }
 
-void ESP_ServerMode(char* ServerName)
+Module_Status ESP_ServerMode(char* ServerName)
 {
+	Module_Status Status = H21R2_ERROR;
 	MX_USART3_UART_Init();
 	int LenServerName;
 	LenServerName = strlen(ServerName);
@@ -452,11 +459,12 @@ void ESP_ServerMode(char* ServerName)
 
 }
 
-void ESP_BleRead(uint8_t * Data,BLE_MODE function )
+Module_Status ESP_BleRead(uint8_t * Data,BLE_MODE function )
  {
+	Module_Status Status = H21R2_ERROR;
 	switch (function) {
 	case server:
-
+		Status = H21R2_OK;
 		if ('H' == FullData[0] && 'Z' == FullData[1]) {
 
 			memcpy(Data, &FullData[2], 18);
@@ -464,6 +472,7 @@ void ESP_BleRead(uint8_t * Data,BLE_MODE function )
 		}
 		break;
 	case client:
+		Status = H21R2_OK;
 		uint8_t SendData;
 		SendData = WRITE_FROM_CLIENT_MODE;
 		if (1 == FullData[0]) {
@@ -483,14 +492,15 @@ void ESP_BleRead(uint8_t * Data,BLE_MODE function )
 }
 
 
-void ESP_BleWrite(char* Data,BLE_MODE function)
+Module_Status ESP_BleWrite(char* Data,BLE_MODE function)
  {
-
+	Module_Status Status = H21R2_ERROR;
 	int LenData;
 	LenData = strlen(Data);
 	uint8_t SendData[LenData + 2];
 	switch (function) {
 	case server:
+		Status = H21R2_OK;
 		SendData[0] = WRITE_TO_SERVER_MODE;
 		SendData[1] = LenData;
 		memcpy(&SendData[2], Data, LenData);
@@ -500,6 +510,7 @@ void ESP_BleWrite(char* Data,BLE_MODE function)
 		}
 		break;
 	case client:
+		Status = H21R2_OK;
 		SendData[0] = WRITE_TO_CLIENT_MODE;
 		SendData[1] = LenData;
 		memcpy(&SendData[2], Data, LenData);
@@ -516,8 +527,9 @@ void ESP_BleWrite(char* Data,BLE_MODE function)
 
 }
 
-void ESP_WifiAccessPoint(char* Ssid,char* Password)
+Module_Status ESP_WifiAccessPoint(char* Ssid,char* Password)
 {
+	Module_Status Status = H21R2_OK;
 	MX_USART3_UART_Init();
 	int LenSsid,LenPassword;
 	LenSsid = strlen(Ssid);
@@ -533,8 +545,9 @@ void ESP_WifiAccessPoint(char* Ssid,char* Password)
 	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
 }
 
-void ESP_WifiStation(char* Ssid,char* Password)
+Module_Status ESP_WifiStation(char* Ssid,char* Password)
 {
+	Module_Status Status = H21R2_OK;
 	MX_USART3_UART_Init();
 	int LenSsid,LenPassword;
 	LenSsid = strlen(Ssid);

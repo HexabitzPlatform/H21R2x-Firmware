@@ -157,14 +157,14 @@ extern void ExecuteMonitor(void);
 
 void SetupPortForRemoteBootloaderUpdate(uint8_t port);
 void remoteBootloaderUpdate(uint8_t src,uint8_t dst,uint8_t inport,uint8_t outport);
-void ESP_ResetMode(void);
-void ESP_BootMode(void);
-void ESP_ClientMode(char* Client_Name,char* Server_Name);
-void ESP_ServerMode(char* ServerName);
-void ESP_WifiAccessPoint(char* Ssid,char* Password);
-void ESP_WifiStation(char* Ssid,char* Password);
-void ESP_BleRead(uint8_t * Data,BLE_MODE function);
-void ESP_BleWrite(char* Data ,BLE_MODE function) ;
+Module_Status ESP_ResetMode(void);
+Module_Status ESP_BootMode(void);
+Module_Status ESP_ClientMode(char* Client_Name,char* Server_Name);
+Module_Status ESP_ServerMode(char* ServerName);
+Module_Status ESP_WifiAccessPoint(char* Ssid,char* Password);
+Module_Status ESP_WifiStation(char* Ssid,char* Password);
+Module_Status ESP_BleRead(uint8_t * Data,BLE_MODE function);
+Module_Status ESP_BleWrite(char* Data ,BLE_MODE function) ;
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
 /* -----------------------------------------------------------------------
