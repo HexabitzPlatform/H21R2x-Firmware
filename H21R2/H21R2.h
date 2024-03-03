@@ -163,7 +163,7 @@ Module_Status ESP_ClientMode(char* Client_Name,char* Server_Name);
 Module_Status ESP_ServerMode(char* ServerName);
 Module_Status ESP_WifiAccessPoint(char* Ssid,char* Password);
 Module_Status ESP_WifiStation(char* Ssid,char* Password);
-Module_Status ESP_BleRead(uint8_t * Data,BLE_MODE function);
+Module_Status ESP_BleRead(char * Data,BLE_MODE function);
 Module_Status ESP_BleWrite(char* Data ,BLE_MODE function) ;
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
