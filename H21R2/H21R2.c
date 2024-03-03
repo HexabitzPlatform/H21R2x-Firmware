@@ -433,16 +433,27 @@ void Module_Peripheral_Init(void){
  */
 Module_Status Module_MessagingTask(uint16_t code,uint8_t port,uint8_t src,uint8_t dst,uint8_t shift){
 	Module_Status result =H21R2_OK;
-
-
-	switch(code){
-
-		default:
-			result =H21R2_ERR_UnknownMessage;
-			break;
-	}
-	
-	return result;
+//
+//
+//	switch(code){
+//	case CODE_H21R2_ESP_RESET:
+//	{
+//		ESP_ResetMode();
+//		break;
+//	}
+//	case CODE_H21R2_ESP_SERVER:
+//	{
+//		char ServerName[20];
+//		memcpy(ServerName,&cMessage[port-1][shift],20);
+//		ESP_ServerMode(ServerName);
+//		break;
+//	}
+//		default:
+//			result =H21R2_ERR_UnknownMessage;
+//			break;
+//	}
+//
+//	return result;
 }
 /* --- Get the port for a given UART. 
  */
@@ -670,14 +681,15 @@ Module_Status ESP_WifiAccessPoint(char* Ssid,char* Password)
 	Data[2]=LenPassword;
 	memcpy(&Data[3], Ssid, LenSsid);
 	memcpy(&Data[LenSsid+3], Password, LenPassword);
-	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
-	Delay_ms(200);
+	HAL_Delay(1000);
 	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
 	return Status;
 }
 
 Module_Status ESP_WifiAccessPointCLI(char* Ssid,char* Password,uint8_t lenSsid,uint8_t lenPassword)
 {
+	ESP_BootMode();
+ 	ESP_ResetMode();
 	Module_Status Status = H21R2_OK;
 	MX_USART3_UART_Init();
 	int LenSsid,LenPassword;
@@ -689,8 +701,7 @@ Module_Status ESP_WifiAccessPointCLI(char* Ssid,char* Password,uint8_t lenSsid,u
 	Data[2]=LenPassword;
 	memcpy(&Data[3], Ssid, LenSsid);
 	memcpy(&Data[LenSsid+3], Password, LenPassword);
-	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
-	Delay_ms(200);
+	HAL_Delay(1000);
 	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
 	return Status;
 }
@@ -708,13 +719,14 @@ Module_Status ESP_WifiStation(char* Ssid,char* Password)
 	Data[2]=LenPassword;
 	memcpy(&Data[3], Ssid, LenSsid);
 	memcpy(&Data[LenSsid+3], Password, LenPassword);
-	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
-	Delay_ms(200);
+	Delay_ms(2000);
 	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
 	return Status;
 }
 Module_Status ESP_WifiStationCLI(char* Ssid,char* Password,uint8_t lenSsid,uint8_t lenPassword)
 {
+	ESP_BootMode();
+ 	ESP_ResetMode();
 	Module_Status Status = H21R2_OK;
 	MX_USART3_UART_Init();
 	int LenSsid,LenPassword;
@@ -726,8 +738,7 @@ Module_Status ESP_WifiStationCLI(char* Ssid,char* Password,uint8_t lenSsid,uint8
 	Data[2]=LenPassword;
 	memcpy(&Data[3], Ssid, LenSsid);
 	memcpy(&Data[LenSsid+3], Password, LenPassword);
-	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
-	Delay_ms(200);
+	Delay_ms(2000);
 	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
 	return Status;
 }

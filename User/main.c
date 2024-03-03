@@ -23,30 +23,22 @@ int main(void){
 }
 
 /*-----------------------------------------------------------*/
-//char Data[20]={"reda"};
-char ssi[20]={"MahmoodReda"};
-char pas[20]={"123456789"};
+char d[50]={"DESKTOP-72Q66QF 7257"};
+char e[10]={"00000000"};
 uint8_t k[40];
 int x ;
 /* User Task */
 void UserTask(void *argument){
 
+
 	ESP_BootMode();
  	ESP_ResetMode();
-
-//    ESP_ClientMode("Reda", "Reda");
-//	ESP_ServerMode("Reda");
-//	MX_USART3_UART_Init();
-//	HAL_UART_Transmit(&huart3, Data, 20, 0xff);
-//	Delay_ms(200);
-//	HAL_UART_Transmit(&huart3, Data, 20, 0xff);
-
+//ESP_WifiAccessPoint("reda", "12345678");
+//HAL_Delay(5000);
+ESP_WifiStation(d, e);
 //	 put your code here, to run repeatedly.
 	while(1){
-//		ESP_BleWrite(Data, client);
-//		ESP_BleRead(k, client);
-//		ESP_BleWrite(Data, server);
-//		ESP_BleRead(k, server);
+
 	}
 }
 
