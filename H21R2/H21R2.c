@@ -35,6 +35,7 @@ module_param_t modParam[NUM_MODULE_PARAMS] ={{.paramPtr = NULL, .paramFormat =FM
 uint8_t FullData[20];
 uint64_t Timeout = 0;
 uint64_t Time = 0;
+uint16_t length1,length2;
 /* Private function prototypes -----------------------------------------------*/
 void ExecuteMonitor(void);
 
@@ -54,8 +55,8 @@ portBASE_TYPE CLI_ESPReadFromBleClientModeCommand( int8_t *pcWriteBuffer, size_t
 /* CLI command structure : ESP Reset Mode */
 const CLI_Command_Definition_t CLI_ESPResetModeCommandDefinition =
 {
-	( const int8_t * ) "espresetmode", /* The command string to type. */
-	( const int8_t * ) "espresetmode:\r\n To reset esp \r\n\r\n",
+	( const int8_t * ) "espreset", /* The command string to type. */
+	( const int8_t * ) "espreset:\r\n To reset esp \r\n\r\n",
 	CLI_ESPResetModeCommand, /* The function to run. */
 	0 /* zero parameters are expected. */
 };
@@ -63,8 +64,8 @@ const CLI_Command_Definition_t CLI_ESPResetModeCommandDefinition =
 /* CLI command structure : ESP Boot Mode */
 const CLI_Command_Definition_t CLI_ESPBootModeCommandDefinition =
 {
-	( const int8_t * ) "espbootmode", /* The command string to type. */
-	( const int8_t * ) "espbootmode:\r\n Booting Esp \r\n\r\n",
+	( const int8_t * ) "espboot", /* The command string to type. */
+	( const int8_t * ) "espboot:\r\n Booting Esp \r\n\r\n",
 	CLI_ESPBootModeCommand, /* The function to run. */
 	0 /* zero parameters are expected. */
 };
@@ -73,7 +74,7 @@ const CLI_Command_Definition_t CLI_ESPBootModeCommandDefinition =
 const CLI_Command_Definition_t CLI_ESPBleClientModeCommandDefinition =
 {
 	( const int8_t * ) "bleclient", /* The command string to type. */
-	( const int8_t * ) "bleclient:\r\n To Set ESP in Ble client Mode \r\n\r\n",
+	( const int8_t * ) "bleclient:\r\n To Set ESP-BLE in Client Mode \r\n\r\n",
 	CLI_ESPBleClientModeCommand, /* The function to run. */
 	2 /* zero parameters are expected. */
 };
@@ -82,7 +83,7 @@ const CLI_Command_Definition_t CLI_ESPBleClientModeCommandDefinition =
 const CLI_Command_Definition_t CLI_ESPBleServerModeCommandDefinition =
 {
 	( const int8_t * ) "bleserver", /* The command string to type. */
-	( const int8_t * ) "bleserver:\r\n To Set ESP in Ble server Mode \r\n\r\n",
+	( const int8_t * ) "bleserver:\r\n To Set ESP-BLE in Server Mode  \r\n\r\n",
 	CLI_ESPBleServerModeCommand, /* The function to run. */
 	1 /* zero parameters are expected. */
 };
@@ -90,8 +91,8 @@ const CLI_Command_Definition_t CLI_ESPBleServerModeCommandDefinition =
 /* CLI command structure : To set ESP in Wifi Access Piont Mode */
 const CLI_Command_Definition_t CLI_ESPWifiAccessPiontCommandDefinition =
 {
-	( const int8_t * ) "accesspoint", /* The command string to type. */
-	( const int8_t * ) "accesspoint:\r\n To Set ESP in Wifi Access Piont Mode \r\n\r\n",
+	( const int8_t * ) "wifiaccesspoint", /* The command string to type. */
+	( const int8_t * ) "wifiaccesspoint:\r\n To Set ESP-Wifi in Access Piont Mode \r\n\r\n",
 	CLI_ESPWifiAccessPiontModeCommand, /* The function to run. */
 	2 /* zero parameters are expected. */
 };
@@ -99,8 +100,8 @@ const CLI_Command_Definition_t CLI_ESPWifiAccessPiontCommandDefinition =
 /* CLI command structure : To set ESP in Wifi Station Mode */
 const CLI_Command_Definition_t CLI_ESPWifiStationModeCommandDefinition =
 {
-	( const int8_t * ) "station", /* The command string to type. */
-	( const int8_t * ) "station:\r\n To Set ESP in Wifi Station Mode \r\n\r\n",
+	( const int8_t * ) "wifistation", /* The command string to type. */
+	( const int8_t * ) "wifistation:\r\n To Set ESP-Wifi in Station Mode \r\n\r\n",
 	CLI_ESPWifiStationModeCommand, /* The function to run. */
 	2 /* zero parameters are expected. */
 };
@@ -109,7 +110,7 @@ const CLI_Command_Definition_t CLI_ESPWifiStationModeCommandDefinition =
 const CLI_Command_Definition_t CLI_ESPReadFromBleServerModeCommandDefinition =
 {
 	( const int8_t * ) "readfromserver", /* The command string to type. */
-	( const int8_t * ) "readfromserver:\r\n To Read From Ble in Server Mode \r\n\r\n",
+	( const int8_t * ) "readfromserver:\r\n To Read From BLE in Server Mode \r\n\r\n",
 	CLI_ESPReadFromBleServerModeCommand, /* The function to run. */
 	0 /* zero parameters are expected. */
 };
@@ -118,7 +119,7 @@ const CLI_Command_Definition_t CLI_ESPReadFromBleServerModeCommandDefinition =
 const CLI_Command_Definition_t CLI_ESPWriteFromBleServerModeCommandDefinition =
 {
 	( const int8_t * ) "writetoserver", /* The command string to type. */
-	( const int8_t * ) "writetoserver:\r\n To Write From Ble in Server Mode \r\n\r\n",
+	( const int8_t * ) "writetoserver:\r\n To Write From BLE in Server Mode \r\n\r\n",
 	CLI_ESPWriteToBleServerModeCommand, /* The function to run. */
 	1 /* zero parameters are expected. */
 };
@@ -127,7 +128,7 @@ const CLI_Command_Definition_t CLI_ESPWriteFromBleServerModeCommandDefinition =
 const CLI_Command_Definition_t CLI_ESPReadFromBleClientModeCommandDefinition =
 {
 	( const int8_t * ) "readfromclient", /* The command string to type. */
-	( const int8_t * ) "readfromclient:\r\n To Read From Ble in Client Mode \r\n\r\n",
+	( const int8_t * ) "readfromclient:\r\n To Read From BLE in Client Mode \r\n\r\n",
 	CLI_ESPReadFromBleClientModeCommand, /* The function to run. */
 	0 /* zero parameters are expected. */
 };
@@ -136,7 +137,7 @@ const CLI_Command_Definition_t CLI_ESPReadFromBleClientModeCommandDefinition =
 const CLI_Command_Definition_t CLI_ESPWriteFromBleclientModeCommandDefinition =
 {
 	( const int8_t * ) "writetoclient", /* The command string to type. */
-	( const int8_t * ) "writetoclihhhent:\r\n To Write From Ble in Client Mode \r\n\r\n",
+	( const int8_t * ) "writetoclient:\r\n To Write From BLE in Client Mode \r\n\r\n",
 	CLI_ESPWriteToBleClientModeCommand, /* The function to run. */
 	1 /* zero parameters are expected. */
 };
@@ -145,8 +146,8 @@ const CLI_Command_Definition_t CLI_ESPWriteFromBleclientModeCommandDefinition =
 /*-----------------------------------------------------------*/
 
 /* -----------------------------------------------------------------------
- |												 Private Functions	 														|
- ----------------------------------------------------------------------- 
+ |								 Private Function			              |
+ -------------------------------------------------------------------------
  */
 
 /**
@@ -431,30 +432,111 @@ void Module_Peripheral_Init(void){
 /*-----------------------------------------------------------*/
 /* --- H21R2 message processing task.
  */
-Module_Status Module_MessagingTask(uint16_t code,uint8_t port,uint8_t src,uint8_t dst,uint8_t shift){
-	Module_Status result =H21R2_OK;
-//
-//
-//	switch(code){
-//	case CODE_H21R2_ESP_RESET:
-//	{
-//		ESP_ResetMode();
-//		break;
-//	}
-//	case CODE_H21R2_ESP_SERVER:
-//	{
-//		char ServerName[20];
-//		memcpy(ServerName,&cMessage[port-1][shift],20);
-//		ESP_ServerMode(ServerName);
-//		break;
-//	}
-//		default:
-//			result =H21R2_ERR_UnknownMessage;
-//			break;
-//	}
-//
-//	return result;
+Module_Status Module_MessagingTask(uint16_t code, uint8_t port, uint8_t src,
+		uint8_t dst, uint8_t shift) {
+	Module_Status result = H21R2_OK;
+
+	switch (code) {
+	case CODE_H21R2_ESP_BOOT: {
+		ESP_Boot();
+		break;
+	}
+	case CODE_H21R2_ESP_RESET: {
+		ESP_Reset();
+		break;
+	}
+	case CODE_H21R2_ESP_SERVER: {
+		length1 = (uint16_t) cMessage[port - 1][shift];
+		char ServerName[length1];
+		memcpy(ServerName, &cMessage[port - 1][1 + shift], length1);
+		BLE_ServerMode(ServerName);
+		break;
+	}
+	case CODE_H21R2_ESP_CLIENT: {
+		length1 = (uint16_t) cMessage[port - 1][shift];
+		length2 = (uint16_t) cMessage[port - 1][1 + shift];
+		char ClientName[length1];
+		char ServerName[length2];
+		memcpy(ClientName, &cMessage[port - 1][2 + shift], length1);
+		memcpy(ServerName, &cMessage[port - 1][length1 + 2 + shift], length2);
+		BLE_ClientMode(ClientName, ServerName);
+		break;
+	}
+	case CODE_H21R2_ESP_ACCESS_POINT: {
+		length1 = (uint16_t) cMessage[port - 1][shift];
+		length2 = (uint16_t) cMessage[port - 1][1 + shift];
+		char Accessspoint[length1];
+		char Password[length2];
+		memcpy(Accessspoint, &cMessage[port - 1][2 + shift], length1);
+		memcpy(Password, &cMessage[port - 1][length1 + 2 + shift], length2);
+		WIFI_AccessPoint(Accessspoint, Password);
+		break;
+	}
+	case CODE_H21R2_ESP_STATION: {
+		length1 = (uint16_t) cMessage[port - 1][shift];
+		length2 = (uint16_t) cMessage[port - 1][1 + shift];
+		char Station[length1];
+		char Password[length2];
+		memcpy(Station, &cMessage[port - 1][2 + shift], length1);
+		memcpy(Password, &cMessage[port - 1][length1 + 2 + shift], length2);
+		WIFI_AccessPoint(Station, Password);
+		break;
+	}
+	case CODE_H21R2_ESP_WRITE_TO_SERVER: {
+		length1 = (uint16_t) cMessage[port - 1][shift];
+		uint8_t SendData[length1 + 2];
+		char Data[length1];
+		memcpy(Data, &cMessage[port - 1][1 + shift], length1);
+		SendData[0] = WRITE_TO_SERVER_MODE;
+		SendData[1] = length1;
+		memcpy(&SendData[2], Data, length1);
+		if (1 == FullData[0]) {
+			HAL_UART_Transmit(&huart3, SendData, length1 + 2, 0xff);
+			FullData[0] = 0;
+		}
+		break;
+	}
+	case CODE_H21R2_ESP_WRITE_TO_CLIENT: {
+		length1 = (uint16_t) cMessage[port - 1][shift];
+		uint8_t SendData[length1 + 2];
+		char Data[length1];
+		memcpy(Data, &cMessage[port - 1][1 + shift], length1);
+		SendData[0] = WRITE_TO_CLIENT_MODE;
+		SendData[1] = length1;
+		memcpy(&SendData[2], Data, length1);
+		if (1 == FullData[0]) {
+			HAL_UART_Transmit(&huart3, SendData, length1 + 2, 0xff);
+			FullData[0] = 0;
+		}
+		break;
+	}
+	case CODE_H21R2_ESP_REDA_FROM_SERVER: {
+		uint16_t module;
+		char Data[20];
+		module = (uint16_t) cMessage[port - 1][shift];
+		BLE_Read(Data, server);
+		memcpy(messageParams, Data, 20);
+		SendMessageToModule(module, CODE_PORT_FORWARD, 20);
+		break;
+	}
+	case CODE_H21R2_ESP_REDA_FROM_CLIENT: {
+		uint16_t module;
+		char Data[20];
+		module = (uint16_t) cMessage[port - 1][shift];
+		BLE_Read(Data, client);
+		memcpy(messageParams, Data, 20);
+		SendMessageToModule(module, CODE_PORT_FORWARD, 20);
+		break;
+	}
+	default:
+		result = H21R2_ERR_UnknownMessage;
+		break;
+	}
+
+	return result;
 }
+
+/*-----------------------------------------------------------*/
 /* --- Get the port for a given UART. 
  */
 uint8_t GetPort(UART_HandleTypeDef *huart){
@@ -525,7 +607,7 @@ void RegisterModuleCLICommands(void){
  |								  APIs							          | 																 	|
 /* -----------------------------------------------------------------------
  */
-Module_Status ESP_ResetMode(void)
+Module_Status ESP_Reset(void)
 {
 	  /* RESET pin fpr esp32 */
 	Module_Status Status = H21R2_OK;
@@ -536,7 +618,7 @@ Module_Status ESP_ResetMode(void)
 	return Status;
 }
 
-Module_Status ESP_BootMode(void)
+Module_Status ESP_Boot(void)
 {
 	  /* BOOT pin for esp32 */
 	Module_Status Status = H21R2_OK;
@@ -548,7 +630,7 @@ Module_Status ESP_BootMode(void)
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
 	return Status;
 }
-Module_Status ESP_ClientMode(char* ClientName,char* ServerName)
+Module_Status BLE_ClientMode(char* ClientName,char* ServerName)
  {
 	Module_Status Status = H21R2_ERROR;
 	MX_USART3_UART_Init();
@@ -566,7 +648,7 @@ Module_Status ESP_ClientMode(char* ClientName,char* ServerName)
 	Status = H21R2_OK;
 	return Status;
 }
-Module_Status ESP_ClientModeCLI(char* ClientName,char* ServerName,uint8_t LenClientName,uint8_t LenServerName)
+Module_Status BLE_ClientModeCLI(char* ClientName,char* ServerName,uint8_t LenClientName,uint8_t LenServerName)
  {
 	Module_Status Status = H21R2_ERROR;
 	MX_USART3_UART_Init();
@@ -582,7 +664,7 @@ Module_Status ESP_ClientModeCLI(char* ClientName,char* ServerName,uint8_t LenCli
 	return Status;
 }
 
-Module_Status ESP_ServerMode(char* ServerName)
+Module_Status BLE_ServerMode(char* ServerName)
 {
 	Module_Status Status = H21R2_ERROR;
 	MX_USART3_UART_Init();
@@ -599,7 +681,7 @@ Module_Status ESP_ServerMode(char* ServerName)
 
 }
 
-Module_Status ESP_BleRead(char * Data,BLE_MODE function )
+Module_Status BLE_Read(char * Data,BLE_MODE function )
  {
 	Module_Status Status = H21R2_ERROR;
 	switch (function) {
@@ -633,11 +715,11 @@ Module_Status ESP_BleRead(char * Data,BLE_MODE function )
 }
 
 
-Module_Status ESP_BleWrite(char* Data,BLE_MODE function)
+Module_Status BLE_Write(char* Data,BLE_MODE function)
  {
 	Module_Status Status = H21R2_ERROR;
 	int LenData;
-	LenData = strlen(Data);
+	LenData =strlen(Data);
 	uint8_t SendData[LenData + 2];
 	switch (function) {
 	case server:
@@ -668,7 +750,7 @@ Module_Status ESP_BleWrite(char* Data,BLE_MODE function)
 	return Status;
 }
 
-Module_Status ESP_WifiAccessPoint(char* Ssid,char* Password)
+Module_Status WIFI_AccessPoint(char* Ssid,char* Password)
 {
 	Module_Status Status = H21R2_OK;
 	MX_USART3_UART_Init();
@@ -681,32 +763,31 @@ Module_Status ESP_WifiAccessPoint(char* Ssid,char* Password)
 	Data[2]=LenPassword;
 	memcpy(&Data[3], Ssid, LenSsid);
 	memcpy(&Data[LenSsid+3], Password, LenPassword);
-	HAL_Delay(1000);
 	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
 	return Status;
 }
 
-Module_Status ESP_WifiAccessPointCLI(char* Ssid,char* Password,uint8_t lenSsid,uint8_t lenPassword)
+Module_Status WIFI_AccessPointCLI(char* Ssid,char* Password,uint8_t lenSsid,uint8_t lenPassword)
 {
-	ESP_BootMode();
- 	ESP_ResetMode();
+	ESP_Boot();
+ 	ESP_Reset();
 	Module_Status Status = H21R2_OK;
 	MX_USART3_UART_Init();
-	int LenSsid,LenPassword;
-	LenSsid = lenSsid;
-	LenPassword = lenPassword;
-	uint8_t Data[LenSsid+LenPassword+3];
+//	int LenSsid,LenPassword;
+//	LenSsid = lenSsid;
+//	LenPassword = lenPassword;
+	uint8_t Data[lenSsid+lenPassword+3];
   	Data[0] = WIFI_ACCESS_POINT_MODE;
-	Data[1]=LenSsid;
-	Data[2]=LenPassword;
-	memcpy(&Data[3], Ssid, LenSsid);
-	memcpy(&Data[LenSsid+3], Password, LenPassword);
+	Data[1]=lenSsid;
+	Data[2]=lenPassword;
+	memcpy(&Data[3], Ssid, lenSsid);
+	memcpy(&Data[lenSsid+3], Password, lenPassword);
 	HAL_Delay(1000);
-	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
+	HAL_UART_Transmit(&huart3, Data, lenSsid+lenPassword+3, 0xff);
 	return Status;
 }
 
-Module_Status ESP_WifiStation(char* Ssid,char* Password)
+Module_Status WIFI_Station(char* Ssid,char* Password)
 {
 	Module_Status Status = H21R2_OK;
 	MX_USART3_UART_Init();
@@ -719,14 +800,13 @@ Module_Status ESP_WifiStation(char* Ssid,char* Password)
 	Data[2]=LenPassword;
 	memcpy(&Data[3], Ssid, LenSsid);
 	memcpy(&Data[LenSsid+3], Password, LenPassword);
-	Delay_ms(2000);
 	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
 	return Status;
 }
-Module_Status ESP_WifiStationCLI(char* Ssid,char* Password,uint8_t lenSsid,uint8_t lenPassword)
+Module_Status WIFI_StationCLI(char* Ssid,char* Password,uint8_t lenSsid,uint8_t lenPassword)
 {
-	ESP_BootMode();
- 	ESP_ResetMode();
+	ESP_Boot();
+ 	ESP_Reset();
 	Module_Status Status = H21R2_OK;
 	MX_USART3_UART_Init();
 	int LenSsid,LenPassword;
@@ -738,7 +818,6 @@ Module_Status ESP_WifiStationCLI(char* Ssid,char* Password,uint8_t lenSsid,uint8
 	Data[2]=LenPassword;
 	memcpy(&Data[3], Ssid, LenSsid);
 	memcpy(&Data[LenSsid+3], Password, LenPassword);
-	Delay_ms(2000);
 	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
 	return Status;
 }
@@ -759,7 +838,7 @@ portBASE_TYPE CLI_ESPResetModeCommand( int8_t *pcWriteBuffer, size_t xWriteBuffe
 		(void )xWriteBufferLen;
 		configASSERT(pcWriteBuffer);
 
-	 	status=ESP_ResetMode();
+	 	status=ESP_Reset();
 
 	 if(status == H21R2_OK)
 	 {
@@ -783,7 +862,7 @@ portBASE_TYPE CLI_ESPBootModeCommand( int8_t *pcWriteBuffer, size_t xWriteBuffer
 		(void )xWriteBufferLen;
 		configASSERT(pcWriteBuffer);
 
-	 	status=ESP_BootMode();
+	 	status=ESP_Boot();
 
 	 if(status == H21R2_OK)
 	 {
@@ -813,7 +892,7 @@ portBASE_TYPE CLI_ESPBleClientModeCommand( int8_t *pcWriteBuffer, size_t xWriteB
 		pcParameterString1 =(int8_t* )FreeRTOS_CLIGetParameter(pcCommandString,1,&xParameterStringLength1);
 		pcParameterString2 =(int8_t* )FreeRTOS_CLIGetParameter(pcCommandString,2,&xParameterStringLength2);
 
-	 	status=ESP_ClientModeCLI(pcParameterString1 , pcParameterString2,xParameterStringLength1,xParameterStringLength2);
+	 	status=BLE_ClientModeCLI(pcParameterString1 , pcParameterString2,xParameterStringLength1,xParameterStringLength2);
 
 	 if(status == H21R2_OK)
 	 {
@@ -845,7 +924,7 @@ portBASE_TYPE CLI_ESPBleServerModeCommand( int8_t *pcWriteBuffer, size_t xWriteB
 		pcParameterString1 =(int8_t* )FreeRTOS_CLIGetParameter(pcCommandString,1,&xParameterStringLength1);
 
 
-	 	status=ESP_ServerMode(pcParameterString1);
+	 	status=BLE_ServerMode(pcParameterString1);
 
 	 if(status == H21R2_OK)
 	 {
@@ -876,7 +955,7 @@ portBASE_TYPE CLI_ESPWifiAccessPiontModeCommand( int8_t *pcWriteBuffer, size_t x
 		pcParameterString1 =(int8_t* )FreeRTOS_CLIGetParameter(pcCommandString,1,&xParameterStringLength1);
 		pcParameterString2 =(int8_t* )FreeRTOS_CLIGetParameter(pcCommandString,2,&xParameterStringLength2);
 
-	 	status=ESP_WifiAccessPointCLI(pcParameterString1 , pcParameterString2,xParameterStringLength1,xParameterStringLength2);
+	 	status=WIFI_AccessPointCLI(pcParameterString1 , pcParameterString2,xParameterStringLength1,xParameterStringLength2);
 
 	 if(status == H21R2_OK)
 	 {
@@ -906,7 +985,7 @@ portBASE_TYPE CLI_ESPWifiStationModeCommand( int8_t *pcWriteBuffer, size_t xWrit
 		pcParameterString1 =(int8_t* )FreeRTOS_CLIGetParameter(pcCommandString,1,&xParameterStringLength1);
 		pcParameterString2 =(int8_t* )FreeRTOS_CLIGetParameter(pcCommandString,2,&xParameterStringLength2);
 
-	 	status=ESP_WifiStationCLI(pcParameterString1 , pcParameterString2,xParameterStringLength1,xParameterStringLength2);
+	 	status=WIFI_StationCLI(pcParameterString1 , pcParameterString2,xParameterStringLength1,xParameterStringLength2);
 
 	 if(status == H21R2_OK)
 	 {
@@ -936,7 +1015,7 @@ portBASE_TYPE CLI_ESPWriteToBleServerModeCommand( int8_t *pcWriteBuffer, size_t 
 		pcParameterString1 =(int8_t* )FreeRTOS_CLIGetParameter(pcCommandString,1,&xParameterStringLength1);
 
 
-	 	status=ESP_BleWrite(pcParameterString1, server);
+	 	status=BLE_Write(pcParameterString1, server);
 
 	 if(status == H21R2_OK)
 	 {
@@ -966,7 +1045,7 @@ portBASE_TYPE CLI_ESPWriteToBleClientModeCommand( int8_t *pcWriteBuffer, size_t 
 		pcParameterString1 =(int8_t* )FreeRTOS_CLIGetParameter(pcCommandString,1,&xParameterStringLength1);
 
 
-	 	status=ESP_BleWrite(pcParameterString1, client);
+	 	status=BLE_Write(pcParameterString1, client);
 
 	 if(status == H21R2_OK)
 	 {
@@ -993,7 +1072,7 @@ portBASE_TYPE CLI_ESPReadFromBleServerModeCommand( int8_t *pcWriteBuffer, size_t
 		(void )xWriteBufferLen;
 
 
-	 	status=ESP_BleRead(Data, server);
+	 	status=BLE_Read(Data, server);
 
 	 if(status == H21R2_OK)
 	 {
@@ -1020,7 +1099,7 @@ portBASE_TYPE CLI_ESPReadFromBleClientModeCommand( int8_t *pcWriteBuffer, size_t
 		(void )xWriteBufferLen;
 
 
-	 	status=ESP_BleRead(Data, client);
+	 	status=BLE_Read(Data, client);
 
 	 if(status == H21R2_OK)
 	 {
