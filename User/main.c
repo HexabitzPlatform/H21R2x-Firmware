@@ -32,12 +32,13 @@ int x ;
 /* User Task */
 void UserTask(void *argument){
 ////
-//ESP_Boot();
-//ESP_Reset();
+ESP_Boot();
+ESP_Reset();
 
 //	MX_USART3_UART_Init();
-//	ESP_ServerMode("www");
-//WIFI_AccessPoint(q, w);
+
+BLE_ServerMode(q);
+//BLE_Write(&w[1], client);
 //HAL_Delay(5000);
 //ESP_WifiStation(d, e);
 //	 put your code here, to run repeatedly.

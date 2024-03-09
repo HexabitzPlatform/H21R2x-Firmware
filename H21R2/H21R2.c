@@ -510,7 +510,7 @@ Module_Status Module_MessagingTask(uint16_t code, uint8_t port, uint8_t src,
 		}
 		break;
 	}
-	case CODE_H21R2_ESP_REDA_FROM_SERVER: {
+	case CODE_H21R2_ESP_READ_FROM_SERVER: {
 		uint16_t module;
 		char Data[20];
 		module = (uint16_t) cMessage[port - 1][shift];
@@ -519,7 +519,7 @@ Module_Status Module_MessagingTask(uint16_t code, uint8_t port, uint8_t src,
 		SendMessageToModule(module, CODE_PORT_FORWARD, 20);
 		break;
 	}
-	case CODE_H21R2_ESP_REDA_FROM_CLIENT: {
+	case CODE_H21R2_ESP_READ_FROM_CLIENT: {
 		uint16_t module;
 		char Data[20];
 		module = (uint16_t) cMessage[port - 1][shift];
