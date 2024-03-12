@@ -701,9 +701,10 @@ Module_Status BLE_Read(char * Data,BLE_MODE function )
 			HAL_UART_Transmit(&huart3, &SendData, 1, 0xff);
 			FullData[0] = 0;
 		}
+		HAL_Delay(10);
 		if ('H' == FullData[0] && 'Z' == FullData[1]) {
 			do {
-				memcpy(Data, &FullData[3], 18);
+				memcpy(Data, &FullData[2], 18);
 
 			} while (1 != FullData[0]);
 			HAL_Delay(100);
