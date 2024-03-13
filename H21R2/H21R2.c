@@ -32,7 +32,7 @@ extern uint8_t numOfRecordedSnippets;
 module_param_t modParam[NUM_MODULE_PARAMS] ={{.paramPtr = NULL, .paramFormat =FMT_FLOAT, .paramName =""}};
 
 /* Private variables ---------------------------------------------------------*/
-uint8_t FullData[20];
+uint8_t FullData[22];
 uint64_t Timeout = 0;
 uint64_t Time = 0;
 uint16_t length1,length2;

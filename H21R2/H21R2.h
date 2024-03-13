@@ -106,7 +106,7 @@
 #define USART3_RX_Pin          GPIO_PIN_9
 #define USART3_TX_Pin          GPIO_PIN_8
 /* Module special parameters */
-#define SIZEBUF                    20
+#define SIZEBUF                    22
 #define CLIENT_MODE                1
 #define SERVER_MODE                2
 #define WIFI_ACCESS_POINT_MODE     3
