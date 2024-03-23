@@ -36,6 +36,8 @@ uint8_t FullData[22];
 uint64_t Timeout = 0;
 uint64_t Time = 0;
 uint16_t length1,length2;
+uint8_t WIFIBUFF[128];
+
 /* Private function prototypes -----------------------------------------------*/
 void ExecuteMonitor(void);
 
@@ -715,6 +717,23 @@ Module_Status BLE_Read(char * Data,BLE_MODE function )
 	return Status;
 }
 
+Module_Status SOCKET_READ(char * Data)
+ {
+
+	Module_Status Status = H21R2_ERROR;
+	Status = H21R2_OK;
+
+	if ('H' == WIFIBUFF[0] && 'Z' == WIFIBUFF[1]) {
+
+		memcpy(Data, &WIFIBUFF[2], 126);
+
+	}
+
+	return Status;
+
+}
+
+
 
 Module_Status BLE_Write(char* Data,BLE_MODE function)
  {
@@ -760,9 +779,9 @@ Module_Status SOCKET_WRITE(char * Data)
 	SendData[0] = WRITE_SOCKET_MODE;
 	SendData[1] = LenData;
 	memcpy(&SendData[2], Data, LenData);
-	if (1 == FullData[0]) {
+	if (1 == WIFIBUFF[0]) {
 		HAL_UART_Transmit(&huart3, SendData, LenData + 2, 0xff);
-		FullData[0] = 0;
+		WIFIBUFF[0] = 0;
 	}
 
 }
@@ -798,7 +817,7 @@ Module_Status WIFI_AP_SOCKET(char* Ssid,char* Password)
 	memcpy(&Data[3], Ssid, LenSsid);
 	memcpy(&Data[LenSsid+3], Password, LenPassword);
 	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
-	HAL_UART_Receive_DMA(&huart3, FullData, SIZEBUF);
+	HAL_UART_Receive_DMA(&huart3, WIFIBUFF, SIZEWIFIBUFF);
 	return Status;
 }
 

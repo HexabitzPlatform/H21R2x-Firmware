@@ -107,6 +107,7 @@
 #define USART3_TX_Pin          GPIO_PIN_8
 /* Module special parameters */
 #define SIZEBUF                    22
+#define SIZEWIFIBUFF               128
 
 #define CLIENT_MODE                1
 #define SERVER_MODE                2
@@ -171,6 +172,7 @@ Module_Status WIFI_AccessPoint(char* Ssid,char* Password);
 Module_Status WIFI_Station(char* Ssid,char* Password);
 Module_Status WIFI_AP_SOCKET(char* Ssid,char* Password);
 Module_Status SOCKET_WRITE(char * Data);
+Module_Status SOCKET_READ(char * Data);
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
 /* -----------------------------------------------------------------------

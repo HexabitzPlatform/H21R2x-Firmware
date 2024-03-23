@@ -13,7 +13,7 @@
 /* Private function prototypes -----------------------------------------------*/
 
 /* Main function ------------------------------------------------------------*/
-
+char Data[100];
 int main(void){
 
 	Module_Init();		//Initialize Module &  BitzOS
@@ -23,7 +23,7 @@ int main(void){
 }
 
 /*-----------------------------------------------------------*/
-
+extern int r ,i ;
 /* User Task */
 void UserTask(void *argument){
 
@@ -33,7 +33,8 @@ WIFI_AP_SOCKET("Redaa", "00000000");
 //	 put your code here, to run repeatedly.
 	while(1){
 //		HAL_Delay(2000);
-		SOCKET_WRITE("rraa");
+		SOCKET_WRITE("123456789qwertyuiopasdfghjklzxcvbnm");
+		SOCKET_READ(Data);
 	}
 }
 
