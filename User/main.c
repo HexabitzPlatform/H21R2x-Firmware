@@ -23,29 +23,17 @@ int main(void){
 }
 
 /*-----------------------------------------------------------*/
-char d[50]={"DESKTOP-72Q66QF 7257"};
-char e[10]={"00000000"};
-char q[50]={"reda"};
-char w[10]={"00000000"};
-//uint8_t k[40];
-int x ;
+
 /* User Task */
 void UserTask(void *argument){
-////
+
 ESP_Boot();
 ESP_Reset();
-
-//	MX_USART3_UART_Init();
-
-BLE_ServerMode(q);
-//BLE_Write(&w[1], client);
-//HAL_Delay(5000);
-//ESP_WifiStation(d, e);
+WIFI_AP_SOCKET("Redaa", "00000000");
 //	 put your code here, to run repeatedly.
 	while(1){
-//		ESP_BleWrite("asd", server);
-//		SendMessageToModule(2,CODE_PING,0);
-//		HAL_Delay(1000);
+//		HAL_Delay(2000);
+		SOCKET_WRITE("rraa");
 	}
 }
 

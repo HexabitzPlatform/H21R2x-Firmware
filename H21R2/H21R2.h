@@ -107,6 +107,7 @@
 #define USART3_TX_Pin          GPIO_PIN_8
 /* Module special parameters */
 #define SIZEBUF                    22
+
 #define CLIENT_MODE                1
 #define SERVER_MODE                2
 #define WIFI_ACCESS_POINT_MODE     3
@@ -114,6 +115,9 @@
 #define WRITE_TO_SERVER_MODE       5
 #define WRITE_TO_CLIENT_MODE       6
 #define WRITE_FROM_CLIENT_MODE     7
+#define WIFI_SOCKET_MODE           8
+#define WRITE_SOCKET_MODE          9
+
 
 /* Module EEPROM Variables */
 // Module Addressing Space 500 - 599
@@ -165,6 +169,8 @@ Module_Status BLE_Read(char * Data,BLE_MODE function);
 Module_Status BLE_Write(char* Data ,BLE_MODE function);
 Module_Status WIFI_AccessPoint(char* Ssid,char* Password);
 Module_Status WIFI_Station(char* Ssid,char* Password);
+Module_Status WIFI_AP_SOCKET(char* Ssid,char* Password);
+Module_Status SOCKET_WRITE(char * Data);
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
 /* -----------------------------------------------------------------------

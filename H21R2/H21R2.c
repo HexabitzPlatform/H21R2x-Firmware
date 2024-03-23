@@ -750,6 +750,22 @@ Module_Status BLE_Write(char* Data,BLE_MODE function)
 	}
 	return Status;
 }
+Module_Status SOCKET_WRITE(char * Data)
+ {
+	Module_Status Status = H21R2_ERROR;
+	int LenData;
+	LenData = strlen(Data);
+	uint8_t SendData[LenData + 2];
+	Status = H21R2_OK;
+	SendData[0] = WRITE_SOCKET_MODE;
+	SendData[1] = LenData;
+	memcpy(&SendData[2], Data, LenData);
+	if (1 == FullData[0]) {
+		HAL_UART_Transmit(&huart3, SendData, LenData + 2, 0xff);
+		FullData[0] = 0;
+	}
+
+}
 
 Module_Status WIFI_AccessPoint(char* Ssid,char* Password)
 {
@@ -765,6 +781,24 @@ Module_Status WIFI_AccessPoint(char* Ssid,char* Password)
 	memcpy(&Data[3], Ssid, LenSsid);
 	memcpy(&Data[LenSsid+3], Password, LenPassword);
 	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
+	return Status;
+}
+
+Module_Status WIFI_AP_SOCKET(char* Ssid,char* Password)
+{
+	Module_Status Status = H21R2_OK;
+	MX_USART3_UART_Init();
+	int LenSsid,LenPassword;
+	LenSsid = strlen(Ssid);
+	LenPassword = strlen(Password);
+	uint8_t Data[LenSsid+LenPassword+3];
+  	Data[0] = WIFI_SOCKET_MODE;
+	Data[1]=LenSsid;
+	Data[2]=LenPassword;
+	memcpy(&Data[3], Ssid, LenSsid);
+	memcpy(&Data[LenSsid+3], Password, LenPassword);
+	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
+	HAL_UART_Receive_DMA(&huart3, FullData, SIZEBUF);
 	return Status;
 }
 
