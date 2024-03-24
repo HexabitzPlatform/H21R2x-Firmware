@@ -691,7 +691,7 @@ Module_Status BLE_Read(char * Data,BLE_MODE function )
 		Status = H21R2_OK;
 		if ('H' == FullData[0] && 'Z' == FullData[1]) {
 
-			memcpy(Data, &FullData[2], 18);
+			memcpy(Data, &FullData[2], SIZEBLEBUFF);
 
 		}
 		break;
@@ -706,7 +706,7 @@ Module_Status BLE_Read(char * Data,BLE_MODE function )
 		HAL_Delay(10);
 		if ('H' == FullData[0] && 'Z' == FullData[1]) {
 			do {
-				memcpy(Data, &FullData[2], 18);
+				memcpy(Data, &FullData[2], SIZEBLEBUFF);
 
 			} while (1 != FullData[0]);
 			HAL_Delay(100);

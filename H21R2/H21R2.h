@@ -107,6 +107,7 @@
 #define USART3_TX_Pin          GPIO_PIN_8
 /* Module special parameters */
 #define SIZEBUF                    22
+#define SIZEBLEBUFF                20
 #define SIZEWIFIBUFF               128
 
 #define CLIENT_MODE                1
