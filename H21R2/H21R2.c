@@ -609,6 +609,11 @@ void RegisterModuleCLICommands(void){
  |								  APIs							          | 																 	|
 /* -----------------------------------------------------------------------
  */
+/*
+ * @brief: To reset esp
+ * @retval: status
+ */
+
 Module_Status ESP_Reset(void)
 {
 	  /* RESET pin fpr esp32 */
@@ -620,6 +625,10 @@ Module_Status ESP_Reset(void)
 	return Status;
 }
 
+/*
+ * @brief: Booting Esp
+ * @retval: status
+ */
 Module_Status ESP_Boot(void)
 {
 	  /* BOOT pin for esp32 */
@@ -632,6 +641,14 @@ Module_Status ESP_Boot(void)
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
 	return Status;
 }
+
+/*
+ * @brief: Initialize BLE client mode
+ * @param1: pointer to a ClientName
+ * @param2: pointer to a ServerName
+ * @retval: status
+ */
+
 Module_Status BLE_ClientMode(char* ClientName,char* ServerName)
  {
 	Module_Status Status = H21R2_ERROR;
@@ -665,7 +682,11 @@ Module_Status BLE_ClientModeCLI(char* ClientName,char* ServerName,uint8_t LenCli
 	Status = H21R2_OK;
 	return Status;
 }
-
+/*
+ * @brief: Initialize BLE Server mode
+ * @param1: pointer to a ServerName
+ * @retval: status
+ */
 Module_Status BLE_ServerMode(char* ServerName)
 {
 	Module_Status Status = H21R2_ERROR;
@@ -682,6 +703,13 @@ Module_Status BLE_ServerMode(char* ServerName)
 	return Status;
 
 }
+
+/*
+ * @brief: To read from BLE in server mode   To read from BLE in clien mode
+ * @param1: pointer to a Data
+ * @param2: BLE_MODE
+ * @retval: status
+ */
 
 Module_Status BLE_Read(char * Data,BLE_MODE function )
  {
@@ -716,6 +744,11 @@ Module_Status BLE_Read(char * Data,BLE_MODE function )
 	}
 	return Status;
 }
+/*
+ * @brief: To read from WIFI Socket mode
+ * @param1: pointer to a Data
+ * @retval: status
+ */
 
 Module_Status WIFI_SocketRead(char * Data)
  {
@@ -733,7 +766,12 @@ Module_Status WIFI_SocketRead(char * Data)
 
 }
 
-
+/*
+ * @brief: To Write from BLE in server mode   To Write from BLE in clien mode
+ * @param1: pointer to a Data
+ * @param2: BLE_MODE
+ * @retval: status
+ */
 
 Module_Status BLE_Write(char* Data,BLE_MODE function)
  {
@@ -769,6 +807,11 @@ Module_Status BLE_Write(char* Data,BLE_MODE function)
 	}
 	return Status;
 }
+/*
+ * @brief: To write to  WIFI Socket mode
+ * @param1: pointer to a Data
+ * @retval: status
+ */
 Module_Status WIFI_SocketWrite(char * Data)
  {
 	Module_Status Status = H21R2_ERROR;
@@ -783,8 +826,15 @@ Module_Status WIFI_SocketWrite(char * Data)
 		HAL_UART_Transmit(&huart3, SendData, LenData + 2, 0xff);
 		WIFIBUFF[0] = 0;
 	}
+	return Status;
 
 }
+/*
+ * @brief: Initialize WIFI access point  mode
+ * @param1: pointer to a  Accesspoint name
+ * @param2: pointer to a  Password
+ * @retval: status
+ */
 
 Module_Status WIFI_AccessPoint(char* Ssid,char* Password)
 {
@@ -802,6 +852,13 @@ Module_Status WIFI_AccessPoint(char* Ssid,char* Password)
 	HAL_UART_Transmit(&huart3, Data, LenSsid+LenPassword+3, 0xff);
 	return Status;
 }
+
+/*
+ * @brief:  Initialize WIFI Socket mode
+ * @param1: pointer to a  Accesspoint name
+ * @param2: pointer to a  Password
+ * @retval: status
+ */
 
 Module_Status WIFI_Socket(char* Ssid,char* Password)
 {
@@ -840,6 +897,13 @@ Module_Status WIFI_AccessPointCLI(char* Ssid,char* Password,uint8_t lenSsid,uint
 	HAL_UART_Transmit(&huart3, Data, lenSsid+lenPassword+3, 0xff);
 	return Status;
 }
+
+/*
+ * @brief:  Initialize WIFI Station mode
+ * @param1: pointer to a  Station  name
+ * @param2: pointer to a  Password
+ * @retval: status
+ */
 
 Module_Status WIFI_Station(char* Ssid,char* Password)
 {
