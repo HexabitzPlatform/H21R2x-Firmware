@@ -717,7 +717,7 @@ Module_Status BLE_Read(char * Data,BLE_MODE function )
 	return Status;
 }
 
-Module_Status SOCKET_READ(char * Data)
+Module_Status WIFI_SocketRead(char * Data)
  {
 
 	Module_Status Status = H21R2_ERROR;
@@ -769,7 +769,7 @@ Module_Status BLE_Write(char* Data,BLE_MODE function)
 	}
 	return Status;
 }
-Module_Status SOCKET_WRITE(char * Data)
+Module_Status WIFI_SocketWrite(char * Data)
  {
 	Module_Status Status = H21R2_ERROR;
 	int LenData;
@@ -803,7 +803,7 @@ Module_Status WIFI_AccessPoint(char* Ssid,char* Password)
 	return Status;
 }
 
-Module_Status WIFI_AP_SOCKET(char* Ssid,char* Password)
+Module_Status WIFI_Socket(char* Ssid,char* Password)
 {
 	Module_Status Status = H21R2_OK;
 	MX_USART3_UART_Init();

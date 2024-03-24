@@ -23,21 +23,14 @@ int main(void){
 }
 
 /*-----------------------------------------------------------*/
-//char Data[20];
 /* User Task */
 void UserTask(void *argument){
-
 ESP_Boot();
 ESP_Reset();
-WIFI_AP_SOCKET("Redaa", "00000000");
-//BLE_ServerMode("redaas");
+
 //	 put your code here, to run repeatedly.
 	while(1){
-//		HAL_Delay(2000);
-//		BLE_Write("fgh", server);
-//		BLE_Read(Data, server);
-		SOCKET_WRITE("Hexa");
-		SOCKET_READ(Data);
+
 	}
 }
 

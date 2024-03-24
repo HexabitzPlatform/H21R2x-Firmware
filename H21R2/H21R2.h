@@ -170,9 +170,9 @@ Module_Status BLE_Read(char * Data,BLE_MODE function);
 Module_Status BLE_Write(char* Data ,BLE_MODE function);
 Module_Status WIFI_AccessPoint(char* Ssid,char* Password);
 Module_Status WIFI_Station(char* Ssid,char* Password);
-Module_Status WIFI_AP_SOCKET(char* Ssid,char* Password);
-Module_Status SOCKET_WRITE(char * Data);
-Module_Status SOCKET_READ(char * Data);
+Module_Status WIFI_Socket(char* Ssid,char* Password);
+Module_Status WIFI_SocketWrite(char * Data);
+Module_Status WIFI_SocketRead(char * Data);
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
 /* -----------------------------------------------------------------------
