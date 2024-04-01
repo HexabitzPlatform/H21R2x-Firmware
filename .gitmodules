@@ -4,3 +4,6 @@
 [submodule "thirdparty"]
 	path = thirdparty
 	url = https://github.com/hexabitzPlatform/thirdparty
+[submodule "ESP32-Firmware"]
+	path = ESP32-Firmware
+	url = https://github.com/HexabitzPlatform/ESP32-Firmware.git

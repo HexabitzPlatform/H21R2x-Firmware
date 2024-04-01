@@ -1,5 +1,5 @@
 /*
- BitzOS (BOS) V0.3.1 - Copyright (C) 2017-2024 Hexabitz
+ BitzOS (BOS) V0.3.2 - Copyright (C) 2017-2024 Hexabitz
  All rights reserved
  
  File Name     : H21R2.h
@@ -106,7 +106,10 @@
 #define USART3_RX_Pin          GPIO_PIN_9
 #define USART3_TX_Pin          GPIO_PIN_8
 /* Module special parameters */
-#define SIZEBUF                    20
+#define SIZEBUF                    22
+#define SIZEBLEBUFF                20
+#define SIZEWIFIBUFF               128
+
 #define CLIENT_MODE                1
 #define SERVER_MODE                2
 #define WIFI_ACCESS_POINT_MODE     3
@@ -114,6 +117,9 @@
 #define WRITE_TO_SERVER_MODE       5
 #define WRITE_TO_CLIENT_MODE       6
 #define WRITE_FROM_CLIENT_MODE     7
+#define WIFI_SOCKET_MODE           8
+#define WRITE_SOCKET_MODE          9
+
 
 /* Module EEPROM Variables */
 // Module Addressing Space 500 - 599
@@ -157,14 +163,17 @@ extern void ExecuteMonitor(void);
 
 void SetupPortForRemoteBootloaderUpdate(uint8_t port);
 void remoteBootloaderUpdate(uint8_t src,uint8_t dst,uint8_t inport,uint8_t outport);
-void ESP_ResetMode(void);
-void ESP_BootMode(void);
-void ESP_ClientMode(char* Client_Name,char* Server_Name);
-void ESP_ServerMode(char* ServerName);
-void ESP_WifiAccessPoint(char* Ssid,char* Password);
-void ESP_WifiStation(char* Ssid,char* Password);
-void ESP_BleRead(uint8_t * Data,BLE_MODE function);
-void ESP_BleWrite(char* Data ,BLE_MODE function) ;
+Module_Status ESP_Reset(void);
+Module_Status ESP_Boot(void);
+Module_Status BLE_ClientMode(char* Client_Name,char* Server_Name);
+Module_Status BLE_ServerMode(char* ServerName);
+Module_Status BLE_Read(char * Data,BLE_MODE function);
+Module_Status BLE_Write(char* Data ,BLE_MODE function);
+Module_Status WIFI_AccessPoint(char* Ssid,char* Password);
+Module_Status WIFI_Station(char* Ssid,char* Password);
+Module_Status WIFI_Socket(char* Ssid,char* Password);
+Module_Status WIFI_SocketWrite(char * Data);
+Module_Status WIFI_SocketRead(char * Data);
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
 /* -----------------------------------------------------------------------
