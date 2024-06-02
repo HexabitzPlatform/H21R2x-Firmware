@@ -777,7 +777,7 @@ Module_Status BLE_Write(char* Data,BLE_MODE function)
  {
 	Module_Status Status = H21R2_ERROR;
 	int LenData;
-	LenData =strlen(Data);
+	LenData = MAX_DATA_LENGTH;
 	uint8_t SendData[LenData + 2];
 	switch (function) {
 	case server:

@@ -119,6 +119,7 @@
 #define WRITE_FROM_CLIENT_MODE     7
 #define WIFI_SOCKET_MODE           8
 #define WRITE_SOCKET_MODE          9
+#define MAX_DATA_LENGTH            20
 
 
 /* Module EEPROM Variables */
