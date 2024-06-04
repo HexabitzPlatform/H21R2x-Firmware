@@ -1,5 +1,5 @@
 /*
- BitzOS (BOS) V0.3.4 - Copyright (C) 2017-2024 Hexabitz
+ BitzOS (BOS) V0.3.3 - Copyright (C) 2017-2024 Hexabitz
  All rights reserved
  
  File Name     : H21R2.h
@@ -119,7 +119,6 @@
 #define WRITE_FROM_CLIENT_MODE     7
 #define WIFI_SOCKET_MODE           8
 #define WRITE_SOCKET_MODE          9
-#define MAX_DATA_LENGTH            20
 
 
 /* Module EEPROM Variables */
@@ -169,11 +168,11 @@ Module_Status ESP_Boot(void);
 Module_Status BLE_ClientMode(char* Client_Name,char* Server_Name);
 Module_Status BLE_ServerMode(char* ServerName);
 Module_Status BLE_Read(char * Data,BLE_MODE function);
-Module_Status BLE_Write(char* Data ,BLE_MODE function);
+Module_Status BLE_Write(char* Data,BLE_MODE function ,uint16_t Size);
 Module_Status WIFI_AccessPoint(char* Ssid,char* Password);
 Module_Status WIFI_Station(char* Ssid,char* Password);
 Module_Status WIFI_Socket(char* Ssid,char* Password);
-Module_Status WIFI_SocketWrite(char * Data);
+Module_Status WIFI_SocketWrite(char * Data , uint16_t Size) ;
 Module_Status WIFI_SocketRead(char * Data);
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|

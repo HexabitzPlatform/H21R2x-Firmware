@@ -1,5 +1,5 @@
 /*
- BitzOS (BOS) V0.3.4 - Copyright (C) 2017-2024 Hexabitz
+ BitzOS (BOS) V0.3.3 - Copyright (C) 2017-2024 Hexabitz
  All rights reserved
 
  File Name     : H21R2.c
@@ -773,11 +773,11 @@ Module_Status WIFI_SocketRead(char * Data)
  * @retval: status
  */
 
-Module_Status BLE_Write(char* Data,BLE_MODE function)
+Module_Status BLE_Write(char* Data,BLE_MODE function ,uint16_t Size)
  {
 	Module_Status Status = H21R2_ERROR;
 	int LenData;
-	LenData = MAX_DATA_LENGTH;
+	LenData =Size;
 	uint8_t SendData[LenData + 2];
 	switch (function) {
 	case server:
@@ -812,11 +812,11 @@ Module_Status BLE_Write(char* Data,BLE_MODE function)
  * @param1: pointer to a Data
  * @retval: status
  */
-Module_Status WIFI_SocketWrite(char * Data)
+Module_Status WIFI_SocketWrite(char * Data , uint16_t Size)
  {
 	Module_Status Status = H21R2_ERROR;
 	int LenData;
-	LenData = strlen(Data);
+	LenData = Size;
 	uint8_t SendData[LenData + 2];
 	Status = H21R2_OK;
 	SendData[0] = WRITE_SOCKET_MODE;
@@ -1133,7 +1133,7 @@ portBASE_TYPE CLI_ESPWriteToBleServerModeCommand( int8_t *pcWriteBuffer, size_t 
 		pcParameterString1 =(int8_t* )FreeRTOS_CLIGetParameter(pcCommandString,1,&xParameterStringLength1);
 
 
-	 	status=BLE_Write(pcParameterString1, server);
+	 	status=BLE_Write(pcParameterString1, server,strlen(pcParameterString1));
 
 	 if(status == H21R2_OK)
 	 {
@@ -1163,7 +1163,7 @@ portBASE_TYPE CLI_ESPWriteToBleClientModeCommand( int8_t *pcWriteBuffer, size_t 
 		pcParameterString1 =(int8_t* )FreeRTOS_CLIGetParameter(pcCommandString,1,&xParameterStringLength1);
 
 
-	 	status=BLE_Write(pcParameterString1, client);
+	 	status=BLE_Write(pcParameterString1, client,strlen(pcParameterString1));
 
 	 if(status == H21R2_OK)
 	 {
