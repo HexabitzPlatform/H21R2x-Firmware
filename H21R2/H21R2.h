@@ -1,5 +1,5 @@
 /*
- BitzOS (BOS) V0.3.3 - Copyright (C) 2017-2024 Hexabitz
+ BitzOS (BOS) V0.3.5 - Copyright (C) 2017-2024 Hexabitz
  All rights reserved
  
  File Name     : H21R2.h
@@ -168,11 +168,11 @@ Module_Status ESP_Boot(void);
 Module_Status BLE_ClientMode(char* Client_Name,char* Server_Name);
 Module_Status BLE_ServerMode(char* ServerName);
 Module_Status BLE_Read(char * Data,BLE_MODE function);
-Module_Status BLE_Write(char* Data ,BLE_MODE function);
+Module_Status BLE_Write(char* Data,BLE_MODE function ,uint16_t Size);
 Module_Status WIFI_AccessPoint(char* Ssid,char* Password);
 Module_Status WIFI_Station(char* Ssid,char* Password);
 Module_Status WIFI_Socket(char* Ssid,char* Password);
-Module_Status WIFI_SocketWrite(char * Data);
+Module_Status WIFI_SocketWrite(char * Data , uint16_t Size) ;
 Module_Status WIFI_SocketRead(char * Data);
 /* -----------------------------------------------------------------------
  |								Commands							      |															 	|
