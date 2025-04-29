@@ -334,19 +334,19 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart){
 		__HAL_RCC_USART3_CLK_ENABLE();
 		__HAL_RCC_GPIOB_CLK_ENABLE();
 
-		GPIO_InitStruct.Pin = USART3_TX_Pin;
+		GPIO_InitStruct.Pin = ESP32_USART_TX_Pin;
 		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 		GPIO_InitStruct.Alternate = USART4_AF;
-		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+		HAL_GPIO_Init(ESP32_USART_PORT, &GPIO_InitStruct);
 
-		GPIO_InitStruct.Pin = USART3_RX_Pin;
+		GPIO_InitStruct.Pin = ESP32_USART_RX_Pin;
 		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 		GPIO_InitStruct.Alternate = USART4_AF;
-		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+		HAL_GPIO_Init(ESP32_USART_PORT, &GPIO_InitStruct);
 		/* USART3 DMA Init */
 		/* USART3_RX Init */
 		hdma_usart3_rx.Instance = DMA1_Channel3;

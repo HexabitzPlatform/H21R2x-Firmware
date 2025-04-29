@@ -125,7 +125,7 @@ void USART3_4_5_6_LPUART1_IRQHandler(void){
 	portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 	
 	/* ESP32 UART */
-	HAL_UART_IRQHandler(&huart3);
+	HAL_UART_IRQHandler(ESP32_USART_HANDEL);
 	
 #if defined (_USART3)
 	HAL_UART_IRQHandler(&huart3);

@@ -1,5 +1,5 @@
 /*
- BitzOS (BOS) V0.3.6 - Copyright (C) 2017-2024 Hexabitz
+ BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
  
  File Name     : H21R2.h
@@ -10,14 +10,13 @@
 >>
 >>
 >>
-
  */
 
-/* Define to prevent recursive inclusion -------------------------------------*/
+/* Define to prevent recursive inclusion ***********************************/
 #ifndef H21R2_H
 #define H21R2_H
 
-/* Includes ------------------------------------------------------------------*/
+/* Includes ****************************************************************/
 #include "BOS.h"
 #include "H21R2_MemoryMap.h"
 #include "H21R2_uart.h"
@@ -25,12 +24,13 @@
 #include "H21R2_dma.h"
 #include "H21R2_inputs.h"
 #include "H21R2_eeprom.h"
-/* Exported definitions -------------------------------------------------------*/
+
+/* Exported Macros *********************************************************/
 #define	MODULE_PN		_H21R2
 
-/* Port-related definitions */
-#define	NUM_OF_PORTS			5
-#define P_PROG 				P2						/* ST factory bootloader UART */
+/* Port-related Definitions */
+#define	NUM_OF_PORTS	5
+#define P_PROG 			P2		/* ST factory bootloader UART */
 
 /* Define Available Ports */
 #define _P1
@@ -85,27 +85,27 @@
 #define	USART6_RX_PORT		GPIOA
 #define	USART6_AF			GPIO_AF8_USART6
 
-/* Module-specific Definitions */
+/* ESP32 UART Pin Definitions */
+#define ESP32_USART_RX_Pin  GPIO_PIN_9
+#define ESP32_USART_TX_Pin  GPIO_PIN_8
+#define ESP32_USART_PORT    GPIOB
+#define ESP32_USART_HANDEL  &huart3
+
+/* ESP32 GPIO Pin Definitions */
+#define ESP32_BOOT_PIN      GPIO_PIN_13
+#define ESP32_BOOT_PORT     GPIOC
+#define ESP32_RST_PIN       GPIO_PIN_0
+#define ESP32_RST_PORT      GPIOD
 
 /* Indicator LED */
-#define _IND_LED_PORT			GPIOB
-#define _IND_LED_PIN			GPIO_PIN_14
+#define _IND_LED_PORT	    GPIOB
+#define _IND_LED_PIN		GPIO_PIN_14
 
-#define NUM_MODULE_PARAMS		1
-
-/* Module GPIO Pinout */
-#define ESP32_BOOT_PIN         GPIO_PIN_13
-#define ESP32_BOOT_PORT        GPIOC
-#define ESP32_RST_PIN          GPIO_PIN_0
-#define ESP32_RST_PORT         GPIOD
-#define ESP32_UART_HANDEL      huart3
-#define USART3_RX_Pin          GPIO_PIN_9
-#define USART3_TX_Pin          GPIO_PIN_8
-/* Module special parameters */
+/* Module-specific Macro Definitions ***************************************/
+#define NUM_MODULE_PARAMS	       1
 #define SIZEBUF                    22
 #define SIZEBLEBUFF                20
 #define SIZEWIFIBUFF               128
-
 #define CLIENT_MODE                1
 #define SERVER_MODE                2
 #define WIFI_ACCESS_POINT_MODE     3
@@ -116,18 +116,19 @@
 #define WIFI_SOCKET_MODE           8
 #define WRITE_SOCKET_MODE          9
 
-
-/* Module_Status Type Definition */
+/* Module-specific Type Definition *****************************************/
+/* Module-status Type Definition */
 typedef enum {
 	H21R2_OK =0,
-	H21R2_ERR_UnknownMessage,
-	H21R2_ERR_WrongParams,
+	H21R2_ERR_UNKNOWNMESSAGE,
+	H21R2_ERR_WRONGPARAMS,
 	H21R2_ERROR =255
 } Module_Status;
 
+/* Connection Type */
 typedef enum {
-	server=0,
-	client,
+	SERVER=0,
+	CLIENT,
 }BLE_MODE;
 
 /* Export UART variables */
@@ -147,23 +148,23 @@ extern void MX_USART5_UART_Init(void);
 extern void MX_USART6_UART_Init(void);
 extern void SystemClock_Config(void);
 
-/* -----------------------------------------------------------------------
- |								  APIs							          |  																 	|
-/* -----------------------------------------------------------------------
- */
+/***************************************************************************/
+/***************************** General Functions ***************************/
+/***************************************************************************/
 Module_Status ESP_Reset(void);
 Module_Status ESP_Boot(void);
+
 Module_Status BLE_ClientMode(char* Client_Name,char* Server_Name);
 Module_Status BLE_ServerMode(char* ServerName);
 Module_Status BLE_Read(char * Data,BLE_MODE function);
 Module_Status BLE_Write(char* Data,BLE_MODE function ,uint16_t Size);
+
 Module_Status WIFI_AccessPoint(char* Ssid,char* Password);
 Module_Status WIFI_Station(char* Ssid,char* Password);
 Module_Status WIFI_Socket(char* Ssid,char* Password);
 Module_Status WIFI_SocketWrite(char * Data , uint16_t Size) ;
 Module_Status WIFI_SocketRead(char * Data);
 
-
 #endif /* H21R2_H */
 
-/************************ (C) COPYRIGHT HEXABITZ *****END OF FILE****/
+/***************** (C) COPYRIGHT HEXABITZ ***** END OF FILE ****************/
