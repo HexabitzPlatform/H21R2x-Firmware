@@ -26,38 +26,34 @@
 #include "H21R2_inputs.h"
 #include "H21R2_eeprom.h"
 /* Exported definitions -------------------------------------------------------*/
-
-#define	modulePN		_H21R2
-
+#define	MODULE_PN		_H21R2
 
 /* Port-related definitions */
-#define	NumOfPorts			5
-
+#define	NUM_OF_PORTS			5
 #define P_PROG 				P2						/* ST factory bootloader UART */
 
-/* Define available ports */
-#define _P1 
-#define _P2 
-#define _P3 
-#define _P4 
-#define _P5 
+/* Define Available Ports */
+#define _P1
+#define _P2
+#define _P3
+#define _P4
+#define _P5
 
-/* Define available USARTs */
-#define _Usart1 1
-#define _Usart2 1
-#define _Usart4 1
-#define _Usart5 1
-#define _Usart6	1
-
+/* Define Available USARTs */
+#define _USART1
+#define _USART2
+#define _USART4
+#define _USART5
+#define _USART6
 
 /* Port-UART mapping */
+#define UART_P1 &huart4
+#define UART_P2 &huart2
+#define UART_P3 &huart6
+#define UART_P4 &huart1
+#define UART_P5 &huart5
 
-#define P1uart &huart4
-#define P2uart &huart2
-#define P3uart &huart6
-#define P4uart &huart1
-#define P5uart &huart5
-
+/* Module-specific Hardware Definitions ************************************/
 /* Port Definitions */
 #define	USART1_TX_PIN		GPIO_PIN_9
 #define	USART1_RX_PIN		GPIO_PIN_10
@@ -121,10 +117,6 @@
 #define WRITE_SOCKET_MODE          9
 
 
-/* Module EEPROM Variables */
-// Module Addressing Space 500 - 599
-#define _EE_MODULE							500		
-
 /* Module_Status Type Definition */
 typedef enum {
 	H21R2_OK =0,
@@ -136,8 +128,8 @@ typedef enum {
 typedef enum {
 	server=0,
 	client,
-
 }BLE_MODE;
+
 /* Export UART variables */
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
@@ -154,15 +146,11 @@ extern void MX_USART4_UART_Init(void);
 extern void MX_USART5_UART_Init(void);
 extern void MX_USART6_UART_Init(void);
 extern void SystemClock_Config(void);
-extern void ExecuteMonitor(void);
 
 /* -----------------------------------------------------------------------
  |								  APIs							          |  																 	|
 /* -----------------------------------------------------------------------
  */
-
-void SetupPortForRemoteBootloaderUpdate(uint8_t port);
-void remoteBootloaderUpdate(uint8_t src,uint8_t dst,uint8_t inport,uint8_t outport);
 Module_Status ESP_Reset(void);
 Module_Status ESP_Boot(void);
 Module_Status BLE_ClientMode(char* Client_Name,char* Server_Name);
@@ -174,10 +162,6 @@ Module_Status WIFI_Station(char* Ssid,char* Password);
 Module_Status WIFI_Socket(char* Ssid,char* Password);
 Module_Status WIFI_SocketWrite(char * Data , uint16_t Size) ;
 Module_Status WIFI_SocketRead(char * Data);
-/* -----------------------------------------------------------------------
- |								Commands							      |															 	|
-/* -----------------------------------------------------------------------
- */
 
 
 #endif /* H21R2_H */

@@ -24,12 +24,8 @@ UART_HandleTypeDef huart4;
 UART_HandleTypeDef huart5;
 UART_HandleTypeDef huart6;
 
-/* Exported variables */
-extern FLASH_ProcessTypeDef pFlash;
-extern uint8_t numOfRecordedSnippets;
-
-/* Module exported parameters ------------------------------------------------*/
-module_param_t modParam[NUM_MODULE_PARAMS] ={0};
+/* Module Parameters */
+ModuleParam_t ModuleParam[NUM_MODULE_PARAMS] ={0};
 
 /* Private variables ---------------------------------------------------------*/
 uint8_t FullData[22];
