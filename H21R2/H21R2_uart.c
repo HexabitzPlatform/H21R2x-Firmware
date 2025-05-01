@@ -22,7 +22,7 @@ DMA_HandleTypeDef hdma_usart6_rx;
 /* Configure UARTs *********************************************************/
 /***************************************************************************/
 /* ESP32 special UART */
-void MX_USART3_UART_Init(void) {
+void UARTInitESP32(void) {
 
 	huart3.Instance = USART3;
 	huart3.Init.BaudRate = 921600;
@@ -334,19 +334,19 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart){
 		__HAL_RCC_USART3_CLK_ENABLE();
 		__HAL_RCC_GPIOB_CLK_ENABLE();
 
-		GPIO_InitStruct.Pin = ESP32_USART_TX_Pin;
+		GPIO_InitStruct.Pin = ESP32_UART_TX_PIN;
 		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 		GPIO_InitStruct.Alternate = USART4_AF;
-		HAL_GPIO_Init(ESP32_USART_PORT, &GPIO_InitStruct);
+		HAL_GPIO_Init(ESP32_UART_PORT, &GPIO_InitStruct);
 
-		GPIO_InitStruct.Pin = ESP32_USART_RX_Pin;
+		GPIO_InitStruct.Pin = ESP32_UART_RX_PIN;
 		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 		GPIO_InitStruct.Alternate = USART4_AF;
-		HAL_GPIO_Init(ESP32_USART_PORT, &GPIO_InitStruct);
+		HAL_GPIO_Init(ESP32_UART_PORT, &GPIO_InitStruct);
 		/* USART3 DMA Init */
 		/* USART3_RX Init */
 		hdma_usart3_rx.Instance = DMA1_Channel3;

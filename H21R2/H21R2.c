@@ -26,10 +26,10 @@ UART_HandleTypeDef huart5;
 UART_HandleTypeDef huart6;
 
 /* Private Variables *******************************************************/
-uint8_t FullData [22] = {0};
-uint8_t WIFIBUFF [128] = {0};
-uint16_t length1 = 0;
-uint16_t length2 = 0;
+uint8_t FullData [ESP_PACKET_LENGTH] = {0};
+uint8_t wifiBuffer [WIFI_BUFF_SIZE] = {0};
+uint16_t Length1 = 0;
+uint16_t Length2 = 0;
 uint64_t Time = 0;
 uint64_t Timeout = 0;
 
@@ -90,7 +90,7 @@ const CLI_Command_Definition_t CLI_ESPWifiAccessPiontCommandDefinition = {
 	( const int8_t * ) "wifiaccesspoint", /* The command string to type. */
 	( const int8_t * ) "wifiaccesspoint:\r\n To Set ESP-Wifi in Access Piont Mode \r\n\r\n",
 	CLI_ESPWifiAccessPiontModeCommand, /* The function to run. */
-	2 /* zero parameters are expected. */
+	2 /* Two parameters are expected. */
 };
 
 /***************************************************************************/
@@ -99,7 +99,7 @@ const CLI_Command_Definition_t CLI_ESPWifiStationModeCommandDefinition = {
 	( const int8_t * ) "wifistation", /* The command string to type. */
 	( const int8_t * ) "wifistation:\r\n To Set ESP-Wifi in Station Mode \r\n\r\n",
 	CLI_ESPWifiStationModeCommand, /* The function to run. */
-	2 /* zero parameters are expected. */
+	2 /* Two parameters are expected. */
 };
 
 /***************************************************************************/
@@ -554,7 +554,7 @@ void Module_Peripheral_Init(void) {
 			dmaIndex [i - 1] = &(DMA1_Channel1->CNDTR);
 		} else if (GetUart(i) == &huart2) {
 			dmaIndex [i - 1] = &(DMA1_Channel2->CNDTR);
-		} else if (GetUart(i) == ESP32_USART_HANDEL) {
+		} else if (GetUart(i) == &huart3) {
 			dmaIndex [i - 1] = &(DMA1_Channel3->CNDTR);
 		} else if (GetUart(i) == &huart4) {
 			dmaIndex [i - 1] = &(DMA1_Channel4->CNDTR);
@@ -571,15 +571,15 @@ void Module_Peripheral_Init(void) {
 Module_Status Module_MessagingTask(uint16_t code, uint8_t port, uint8_t src, uint8_t dst, uint8_t shift) {
 	Module_Status result = H21R2_OK;
 
-	char ServerName2 [length2];
-	char ServerName [length1];
-	char ClientName [length1];
-	char Accessspoint [length1];
-	char Station [length1];
-	char Password [length2];
+	char ServerName2 [Length2];
+	char ServerName [Length1];
+	char ClientName [Length1];
+	char Accessspoint [Length1];
+	char Station [Length1];
+	char Password [Length2];
 	char Data2 [20];
-	char Data [length1];
-	uint8_t SendData [length1 + 2];
+	char Data [Length1];
+	uint8_t SendData [Length1 + 2];
 	uint16_t module;
 
 	switch (code) {
@@ -592,55 +592,55 @@ Module_Status Module_MessagingTask(uint16_t code, uint8_t port, uint8_t src, uin
 		break;
 
 	case CODE_H21R2_ESP_SERVER:
-		length1 = (uint16_t) cMessage [port - 1] [shift];
-		memcpy(ServerName, &cMessage [port - 1] [1 + shift], length1);
+		Length1 = (uint16_t) cMessage [port - 1] [shift];
+		memcpy(ServerName, &cMessage [port - 1] [1 + shift], Length1);
 		BLE_ServerMode(ServerName);
 		break;
 
 	case CODE_H21R2_ESP_CLIENT:
-		length1 = (uint16_t) cMessage [port - 1] [shift];
-		length2 = (uint16_t) cMessage [port - 1] [1 + shift];
-		memcpy(ClientName, &cMessage [port - 1] [2 + shift], length1);
-		memcpy(ServerName2, &cMessage [port - 1] [length1 + 2 + shift], length2);
+		Length1 = (uint16_t) cMessage [port - 1] [shift];
+		Length2 = (uint16_t) cMessage [port - 1] [1 + shift];
+		memcpy(ClientName, &cMessage [port - 1] [2 + shift], Length1);
+		memcpy(ServerName2, &cMessage [port - 1] [Length1 + 2 + shift], Length2);
 		BLE_ClientMode(ClientName, ServerName2);
 		break;
 
 	case CODE_H21R2_ESP_ACCESS_POINT:
-		length1 = (uint16_t) cMessage [port - 1] [shift];
-		length2 = (uint16_t) cMessage [port - 1] [1 + shift];
-		memcpy(Accessspoint, &cMessage [port - 1] [2 + shift], length1);
-		memcpy(Password, &cMessage [port - 1] [length1 + 2 + shift], length2);
+		Length1 = (uint16_t) cMessage [port - 1] [shift];
+		Length2 = (uint16_t) cMessage [port - 1] [1 + shift];
+		memcpy(Accessspoint, &cMessage [port - 1] [2 + shift], Length1);
+		memcpy(Password, &cMessage [port - 1] [Length1 + 2 + shift], Length2);
 		WIFI_AccessPoint(Accessspoint, Password);
 		break;
 
 	case CODE_H21R2_ESP_STATION:
-		length1 = (uint16_t) cMessage [port - 1] [shift];
-		length2 = (uint16_t) cMessage [port - 1] [1 + shift];
-		memcpy(Station, &cMessage [port - 1] [2 + shift], length1);
-		memcpy(Password, &cMessage [port - 1] [length1 + 2 + shift], length2);
+		Length1 = (uint16_t) cMessage [port - 1] [shift];
+		Length2 = (uint16_t) cMessage [port - 1] [1 + shift];
+		memcpy(Station, &cMessage [port - 1] [2 + shift], Length1);
+		memcpy(Password, &cMessage [port - 1] [Length1 + 2 + shift], Length2);
 		WIFI_AccessPoint(Station, Password);
 		break;
 
 	case CODE_H21R2_ESP_WRITE_TO_SERVER:
-		length1 = (uint16_t) cMessage [port - 1] [shift];
-		memcpy(Data, &cMessage [port - 1] [1 + shift], length1);
+		Length1 = (uint16_t) cMessage [port - 1] [shift];
+		memcpy(Data, &cMessage [port - 1] [1 + shift], Length1);
 		SendData [0] = WRITE_TO_SERVER_MODE;
-		SendData [1] = length1;
-		memcpy(&SendData [2], Data, length1);
+		SendData [1] = Length1;
+		memcpy(&SendData [2], Data, Length1);
 		if (1 == FullData [0]) {
-			HAL_UART_Transmit(ESP32_USART_HANDEL, SendData, length1 + 2, 0xff);
+			HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, Length1 + 2, 0xff);
 			FullData [0] = 0;
 		}
 		break;
 
 	case CODE_H21R2_ESP_WRITE_TO_CLIENT:
-		length1 = (uint16_t) cMessage [port - 1] [shift];
-		memcpy(Data, &cMessage [port - 1] [1 + shift], length1);
+		Length1 = (uint16_t) cMessage [port - 1] [shift];
+		memcpy(Data, &cMessage [port - 1] [1 + shift], Length1);
 		SendData [0] = WRITE_TO_CLIENT_MODE;
-		SendData [1] = length1;
-		memcpy(&SendData [2], Data, length1);
+		SendData [1] = Length1;
+		memcpy(&SendData [2], Data, Length1);
 		if (1 == FullData [0]) {
-			HAL_UART_Transmit(ESP32_USART_HANDEL, SendData, length1 + 2, 0xff);
+			HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, Length1 + 2, 0xff);
 			FullData [0] = 0;
 		}
 		break;
@@ -727,9 +727,9 @@ Module_Status GetModuleParameter(uint8_t paramIndex,float *value){
 Module_Status ESP_Reset(void) {
 	Module_Status Status = H21R2_OK;
 
-	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_RESET);
 	HAL_Delay(5);
-	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_SET);
 	HAL_Delay(1000);
 
 	return Status;
@@ -740,12 +740,12 @@ Module_Status ESP_Reset(void) {
 Module_Status ESP_Boot(void) {
 	Module_Status Status = H21R2_OK;
 
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(ESP32_BOOT_PORT, ESP32_BOOT_PIN, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_RESET);
 	HAL_Delay(100);
-	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_SET);
 	HAL_Delay(100);
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(ESP32_BOOT_PORT, ESP32_BOOT_PIN, GPIO_PIN_SET);
 
 	return Status;
 }
@@ -759,7 +759,7 @@ Module_Status BLE_ClientMode(char *ClientName, char *ServerName) {
 	Module_Status Status = H21R2_OK;
 	int LenClientName, LenServerName;
 
-	MX_USART3_UART_Init();
+	UARTInitESP32();
 
 	LenClientName = strlen(ClientName);
 	LenServerName = strlen(ServerName);
@@ -770,8 +770,8 @@ Module_Status BLE_ClientMode(char *ClientName, char *ServerName) {
 	Data [2] = LenServerName;
 	memcpy(&Data [3], ClientName, LenClientName);
 	memcpy(&Data [LenClientName + 3], ServerName, LenServerName);
-	HAL_UART_Transmit(ESP32_USART_HANDEL, Data, LenClientName + LenServerName + 3, 0xff);
-	HAL_UART_Receive_DMA(ESP32_USART_HANDEL, FullData, SIZEBUF);
+	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenClientName + LenServerName + 3, 0xff);
+	HAL_UART_Receive_DMA(ESP32_UART_HANDEL, FullData, ESP_PACKET_LENGTH);
 
 	return Status;
 }
@@ -781,15 +781,15 @@ Module_Status BLE_ClientModeCLI(char *ClientName, char *ServerName, uint8_t LenC
 	Module_Status Status = H21R2_OK;
 	uint8_t Data [LenClientName + LenServerName + 3];
 
-	MX_USART3_UART_Init();
+	UARTInitESP32();
 
 	Data [0] = CLIENT_MODE;
 	Data [1] = LenClientName;
 	Data [2] = LenServerName;
 	memcpy(&Data [3], ClientName, LenClientName);
 	memcpy(&Data [LenClientName + 3], ServerName, LenServerName);
-	HAL_UART_Transmit(ESP32_USART_HANDEL, Data, LenClientName + LenServerName + 3, 0xff);
-	HAL_UART_Receive_DMA(ESP32_USART_HANDEL, FullData, SIZEBUF);
+	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenClientName + LenServerName + 3, 0xff);
+	HAL_UART_Receive_DMA(ESP32_UART_HANDEL, FullData, ESP_PACKET_LENGTH);
 
 	return Status;
 }
@@ -802,7 +802,7 @@ Module_Status BLE_ServerMode(char *ServerName) {
 	Module_Status Status = H21R2_OK;
 
 	int LenServerName;
-	MX_USART3_UART_Init();
+	UARTInitESP32();
 
 	LenServerName = strlen(ServerName);
 	uint8_t Data [LenServerName + 2];
@@ -810,8 +810,8 @@ Module_Status BLE_ServerMode(char *ServerName) {
 	Data [0] = SERVER_MODE;
 	Data [1] = LenServerName;
 	memcpy(&Data [2], ServerName, LenServerName);
-	HAL_UART_Transmit(ESP32_USART_HANDEL, Data, LenServerName + 2, 0xff);
-	HAL_UART_Receive_DMA(ESP32_USART_HANDEL, FullData, SIZEBUF);
+	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenServerName + 2, 0xff);
+	HAL_UART_Receive_DMA(ESP32_UART_HANDEL, FullData, ESP_PACKET_LENGTH);
 
 	return Status;
 }
@@ -828,20 +828,20 @@ Module_Status BLE_Read(char *Data, BLE_MODE function) {
 	switch (function) {
 	case SERVER:
 		if ('H' == FullData [0] && 'Z' == FullData [1])
-			memcpy(Data, &FullData [2], SIZEBLEBUFF);
+			memcpy(Data, &FullData [2], BLE_BUFF_SIZE);
 		break;
 
 	case CLIENT:
 		SendData = WRITE_FROM_CLIENT_MODE;
-		if (1 == FullData [0]) {
-			HAL_UART_Transmit(ESP32_USART_HANDEL, &SendData, 1, 0xff);
+		if (FullData [0] == 1) {
+			HAL_UART_Transmit(ESP32_UART_HANDEL, &SendData, 1, 0xff);
 			FullData [0] = 0;
 		}
 		HAL_Delay(10);
 		if ('H' == FullData [0] && 'Z' == FullData [1]) {
 			do {
-				memcpy(Data, &FullData [2], SIZEBLEBUFF);
-			} while (1 != FullData [0]);
+				memcpy(Data, &FullData [2], BLE_BUFF_SIZE);
+			} while (FullData [0] != 1);
 			HAL_Delay(100);
 		}
 		break;
@@ -858,8 +858,8 @@ Module_Status WIFI_SocketRead(char *Data) {
 	Module_Status Status = H21R2_ERROR;
 	Status = H21R2_OK;
 
-	if ('H' == WIFIBUFF [0] && 'Z' == WIFIBUFF [1])
-		memcpy(Data, &WIFIBUFF [2], 126);
+	if ('H' == wifiBuffer [0] && 'Z' == wifiBuffer [1])
+		memcpy(Data, &wifiBuffer [2], 126);
 
 	return Status;
 }
@@ -882,8 +882,8 @@ Module_Status BLE_Write(char *Data, BLE_MODE function, uint16_t Size) {
 		SendData [0] = WRITE_TO_SERVER_MODE;
 		SendData [1] = LenData;
 		memcpy(&SendData [2], Data, LenData);
-		if (1 == FullData [0]) {
-			HAL_UART_Transmit(ESP32_USART_HANDEL, SendData, LenData + 2, 0xff);
+		if (FullData [0] == 1) {
+			HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, LenData + 2, 0xff);
 			FullData [0] = 0;
 		}
 		break;
@@ -893,8 +893,8 @@ Module_Status BLE_Write(char *Data, BLE_MODE function, uint16_t Size) {
 		SendData [0] = WRITE_TO_CLIENT_MODE;
 		SendData [1] = LenData;
 		memcpy(&SendData [2], Data, LenData);
-		if (1 == FullData [0]) {
-			HAL_UART_Transmit(ESP32_USART_HANDEL, SendData, LenData + 2, 0xff);
+		if (FullData [0] == 1) {
+			HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, LenData + 2, 0xff);
 			FullData [0] = 0;
 			do {
 
@@ -921,9 +921,9 @@ Module_Status WIFI_SocketWrite(char *Data, uint16_t Size) {
 	SendData [0] = WRITE_SOCKET_MODE;
 	SendData [1] = LenData;
 	memcpy(&SendData [2], Data, LenData);
-	if (1 == WIFIBUFF [0]) {
-		HAL_UART_Transmit(ESP32_USART_HANDEL, SendData, LenData + 2, 0xff);
-		WIFIBUFF [0] = 0;
+	if (wifiBuffer[0] == 1) {
+		HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, LenData + 2, 0xff);
+		wifiBuffer [0] = 0;
 	}
 
 	return Status;
@@ -938,7 +938,7 @@ Module_Status WIFI_AccessPoint(char *Ssid, char *Password) {
 	Module_Status Status = H21R2_OK;
 	int LenSsid, LenPassword;
 
-	MX_USART3_UART_Init();
+	UARTInitESP32();
 
 	LenSsid = strlen(Ssid);
 	LenPassword = strlen(Password);
@@ -949,7 +949,7 @@ Module_Status WIFI_AccessPoint(char *Ssid, char *Password) {
 	Data [2] = LenPassword;
 	memcpy(&Data [3], Ssid, LenSsid);
 	memcpy(&Data [LenSsid + 3], Password, LenPassword);
-	HAL_UART_Transmit(ESP32_USART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff);
+	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff);
 
 	return Status;
 }
@@ -963,7 +963,7 @@ Module_Status WIFI_Socket(char *Ssid, char *Password) {
 	Module_Status Status = H21R2_OK;
 	int LenSsid, LenPassword;
 
-	MX_USART3_UART_Init();
+	UARTInitESP32();
 
 	LenSsid = strlen(Ssid);
 	LenPassword = strlen(Password);
@@ -973,8 +973,8 @@ Module_Status WIFI_Socket(char *Ssid, char *Password) {
 	Data [2] = LenPassword;
 	memcpy(&Data [3], Ssid, LenSsid);
 	memcpy(&Data [LenSsid + 3], Password, LenPassword);
-	HAL_UART_Transmit(ESP32_USART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff);
-	HAL_UART_Receive_DMA(ESP32_USART_HANDEL, WIFIBUFF, SIZEWIFIBUFF);
+	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff);
+	HAL_UART_Receive_DMA(ESP32_UART_HANDEL, wifiBuffer, WIFI_BUFF_SIZE);
 
 	return Status;
 }
@@ -987,7 +987,7 @@ Module_Status WIFI_AccessPointCLI(char *Ssid, char *Password, uint8_t lenSsid, u
 	ESP_Boot();
 	ESP_Reset();
 
-	MX_USART3_UART_Init();
+	UARTInitESP32();
 
 	Data [0] = WIFI_ACCESS_POINT_MODE;
 	Data [1] = lenSsid;
@@ -995,7 +995,7 @@ Module_Status WIFI_AccessPointCLI(char *Ssid, char *Password, uint8_t lenSsid, u
 	memcpy(&Data [3], Ssid, lenSsid);
 	memcpy(&Data [lenSsid + 3], Password, lenPassword);
 	HAL_Delay(1000);
-	HAL_UART_Transmit(ESP32_USART_HANDEL, Data, lenSsid + lenPassword + 3, 0xff);
+	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, lenSsid + lenPassword + 3, 0xff);
 
 	return Status;
 }
@@ -1009,7 +1009,7 @@ Module_Status WIFI_Station(char *Ssid, char *Password) {
 	Module_Status Status = H21R2_OK;
 	int LenSsid, LenPassword;
 
-	MX_USART3_UART_Init();
+	UARTInitESP32();
 
 	LenSsid = strlen(Ssid);
 	LenPassword = strlen(Password);
@@ -1019,7 +1019,7 @@ Module_Status WIFI_Station(char *Ssid, char *Password) {
 	Data [2] = LenPassword;
 	memcpy(&Data [3], Ssid, LenSsid);
 	memcpy(&Data [LenSsid + 3], Password, LenPassword);
-	HAL_UART_Transmit(ESP32_USART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff);
+	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff);
 
 	return Status;
 }
@@ -1032,7 +1032,7 @@ Module_Status WIFI_StationCLI(char *Ssid, char *Password, uint8_t lenSsid, uint8
 	ESP_Boot();
 	ESP_Reset();
 
-	MX_USART3_UART_Init();
+	UARTInitESP32();
 
 	LenSsid = lenSsid;
 	LenPassword = lenPassword;
@@ -1042,7 +1042,7 @@ Module_Status WIFI_StationCLI(char *Ssid, char *Password, uint8_t lenSsid, uint8
 	Data [2] = LenPassword;
 	memcpy(&Data [3], Ssid, LenSsid);
 	memcpy(&Data [LenSsid + 3], Password, LenPassword);
-	HAL_UART_Transmit(ESP32_USART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff);
+	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff);
 
 	return Status;
 }

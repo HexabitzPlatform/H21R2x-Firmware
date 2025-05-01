@@ -18,6 +18,7 @@ extern uint8_t WakeupFromStopFlag;
 extern uint8_t UARTRxBuf[NUM_OF_PORTS][MSG_RX_BUF_SIZE];
 extern TaskHandle_t xCommandConsoleTaskHandle; /* CLI Task handler */
 
+extern DMA_HandleTypeDef hdma_usart3_rx; /* ESP32 UART Special Peripheral */
 /* Local Variables *********************************************************/
 uint16_t PacketLength =0;
 uint8_t Count =0;
@@ -125,7 +126,7 @@ void USART3_4_5_6_LPUART1_IRQHandler(void){
 	portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 	
 	/* ESP32 UART */
-	HAL_UART_IRQHandler(ESP32_USART_HANDEL);
+	HAL_UART_IRQHandler(ESP32_UART_HANDEL);
 	
 #if defined (_USART3)
 	HAL_UART_IRQHandler(&huart3);
@@ -193,7 +194,7 @@ void DMA1_Channel1_IRQHandler(void) {
 /* This function handles DMA1 channel 2 and channel 3 interrupts */
 void DMA1_Channel2_3_IRQHandler(void) {
 	/* ESP32 UART-DMA handler */
-	HAL_DMA_IRQHandler(&huart3);
+	HAL_DMA_IRQHandler(ESP32_UART_DMA_HANDLER);
 
 #if defined (_USART2)
 	if (HAL_DMA_GET_IT_SOURCE(DMA1,DMA_ISR_GIF2) == SET)

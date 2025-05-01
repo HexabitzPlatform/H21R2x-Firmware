@@ -86,10 +86,11 @@
 #define	USART6_AF			GPIO_AF8_USART6
 
 /* ESP32 UART Pin Definitions */
-#define ESP32_USART_RX_Pin  GPIO_PIN_9
-#define ESP32_USART_TX_Pin  GPIO_PIN_8
-#define ESP32_USART_PORT    GPIOB
-#define ESP32_USART_HANDEL  &huart3
+#define ESP32_UART_RX_PIN      GPIO_PIN_9
+#define ESP32_UART_TX_PIN      GPIO_PIN_8
+#define ESP32_UART_PORT        GPIOB
+#define ESP32_UART_HANDEL      &huart3
+#define ESP32_UART_DMA_HANDLER &hdma_usart3_rx
 
 /* ESP32 GPIO Pin Definitions */
 #define ESP32_BOOT_PIN      GPIO_PIN_13
@@ -103,9 +104,9 @@
 
 /* Module-specific Macro Definitions ***************************************/
 #define NUM_MODULE_PARAMS	       1
-#define SIZEBUF                    22
-#define SIZEBLEBUFF                20
-#define SIZEWIFIBUFF               128
+#define ESP_PACKET_LENGTH          22
+#define BLE_BUFF_SIZE              20
+#define WIFI_BUFF_SIZE             128
 #define CLIENT_MODE                1
 #define SERVER_MODE                2
 #define WIFI_ACCESS_POINT_MODE     3
