@@ -26,15 +26,14 @@ UART_HandleTypeDef huart5;
 UART_HandleTypeDef huart6;
 
 /* Private Variables *******************************************************/
-uint8_t FullData [ESP_PACKET_LENGTH] = {0};
-uint8_t wifiBuffer [WIFI_BUFF_SIZE] = {0};
-uint16_t Length1 = 0;
-uint16_t Length2 = 0;
-uint64_t Time = 0;
-uint64_t Timeout = 0;
-
+uint8_t FullData[ESP_PACKET_LENGTH] = {0}; /* Buffer to store ESP32 communication data */
+uint8_t wifiBuffer[WIFI_BUFF_SIZE] = {0};   /* Buffer to store WiFi communication data */
+uint16_t Length1 = 0;                      /* Length of first data string */
+uint16_t Length2 = 0;                      /* Length of second data string */
+uint64_t Time = 0;                         /* Timestamp for operations */
+uint64_t Timeout = 0;                      /* Timeout value for operations */
 /* Module Parameters */
-ModuleParam_t ModuleParam[NUM_MODULE_PARAMS] ={0};
+ModuleParam_t ModuleParam[NUM_MODULE_PARAMS] = {0}; /* Array to store module parameters */
 
 /* Create CLI commands *****************************************************/
 portBASE_TYPE CLI_ESPResetModeCommand( int8_t *pcWriteBuffer, size_t xWriteBufferLen, const int8_t *pcCommandString );
@@ -49,94 +48,86 @@ portBASE_TYPE CLI_ESPReadFromBleServerModeCommand( int8_t *pcWriteBuffer, size_t
 portBASE_TYPE CLI_ESPReadFromBleClientModeCommand( int8_t *pcWriteBuffer, size_t xWriteBufferLen, const int8_t *pcCommandString );
 
 /* CLI command structure ***************************************************/
-/* CLI command structure : ESP Reset Mode */
+/* CLI command structure: ESP Reset Mode */
 const CLI_Command_Definition_t CLI_ESPResetModeCommandDefinition = {
-	( const int8_t * ) "espreset", /* The command string to type. */
-	( const int8_t * ) "espreset:\r\n To reset esp \r\n\r\n",
-	CLI_ESPResetModeCommand, /* The function to run. */
-	0 /* zero parameters are expected. */
+    (const int8_t *)"espreset", /* Command string to type */
+    (const int8_t *)"espreset:\r\n To reset esp \r\n\r\n",
+    CLI_ESPResetModeCommand, /* Function to execute */
+    0 /* Zero parameters expected */
 };
 
-/***************************************************************************/
-/* CLI command structure : ESP Boot Mode */
+/* CLI command structure: ESP Boot Mode */
 const CLI_Command_Definition_t CLI_ESPBootModeCommandDefinition = {
-	( const int8_t * ) "espboot", /* The command string to type. */
-	( const int8_t * ) "espboot:\r\n Booting Esp \r\n\r\n",
-	CLI_ESPBootModeCommand, /* The function to run. */
-	0 /* zero parameters are expected. */
+    (const int8_t *)"espboot", /* Command string to type */
+    (const int8_t *)"espboot:\r\n Booting Esp \r\n\r\n",
+    CLI_ESPBootModeCommand, /* Function to execute */
+    0 /* Zero parameters expected */
 };
 
-/***************************************************************************/
-/* CLI command structure : To set ESP in Ble CLIENT Mode */
+/* CLI command structure: Set ESP in BLE Client Mode */
 const CLI_Command_Definition_t CLI_ESPBleClientModeCommandDefinition = {
-	( const int8_t * ) "bleclient", /* The command string to type. */
-	( const int8_t * ) "bleclient:\r\n To Set ESP-BLE in Client Mode \r\n\r\n",
-	CLI_ESPBleClientModeCommand, /* The function to run. */
-	2 /* Two parameters are expected. */
+    (const int8_t *)"bleclient", /* Command string to type */
+    (const int8_t *)"bleclient:\r\n To Set ESP-BLE in Client Mode \r\n\r\n",
+    CLI_ESPBleClientModeCommand, /* Function to execute */
+    2 /* Two parameters expected */
 };
 
-/***************************************************************************/
-/* CLI command structure : To set ESP in Ble Server Mode */
+/* CLI command structure: Set ESP in BLE Server Mode */
 const CLI_Command_Definition_t CLI_ESPBleServerModeCommandDefinition = {
-	( const int8_t * ) "bleserver", /* The command string to type. */
-	( const int8_t * ) "bleserver:\r\n To Set ESP-BLE in Server Mode  \r\n\r\n",
-	CLI_ESPBleServerModeCommand, /* The function to run. */
-	1 /* One parameters are expected. */
+    (const int8_t *)"bleserver", /* Command string to type */
+    (const int8_t *)"bleserver:\r\n To Set ESP-BLE in Server Mode \r\n\r\n",
+    CLI_ESPBleServerModeCommand, /* Function to execute */
+    1 /* One parameter expected */
 };
 
-/***************************************************************************/
-/* CLI command structure : To set ESP in Wifi Access Piont Mode */
+/* CLI command structure: Set ESP in WiFi Access Point Mode */
 const CLI_Command_Definition_t CLI_ESPWifiAccessPiontCommandDefinition = {
-	( const int8_t * ) "wifiaccesspoint", /* The command string to type. */
-	( const int8_t * ) "wifiaccesspoint:\r\n To Set ESP-Wifi in Access Piont Mode \r\n\r\n",
-	CLI_ESPWifiAccessPiontModeCommand, /* The function to run. */
-	2 /* Two parameters are expected. */
+    (const int8_t *)"wifiaccesspoint", /* Command string to type */
+    (const int8_t *)"wifiaccesspoint:\r\n To Set ESP-Wifi in Access Point Mode \r\n\r\n",
+    CLI_ESPWifiAccessPiontModeCommand, /* Function to execute */
+    2 /* Two parameters expected */
 };
 
-/***************************************************************************/
-/* CLI command structure : To set ESP in Wifi Station Mode */
+/* CLI command structure: Set ESP in WiFi Station Mode */
 const CLI_Command_Definition_t CLI_ESPWifiStationModeCommandDefinition = {
-	( const int8_t * ) "wifistation", /* The command string to type. */
-	( const int8_t * ) "wifistation:\r\n To Set ESP-Wifi in Station Mode \r\n\r\n",
-	CLI_ESPWifiStationModeCommand, /* The function to run. */
-	2 /* Two parameters are expected. */
+    (const int8_t *)"wifistation", /* Command string to type */
+    (const int8_t *)"wifistation:\r\n To Set ESP-Wifi in Station Mode \r\n\r\n",
+    CLI_ESPWifiStationModeCommand, /* Function to execute */
+    2 /* Two parameters expected */
 };
 
-/***************************************************************************/
-/* CLI command structure : To Read From Ble in Server Mode  */
+/* CLI command structure: Read from BLE in Server Mode */
 const CLI_Command_Definition_t CLI_ESPReadFromBleServerModeCommandDefinition = {
-	( const int8_t * ) "readfromserver", /* The command string to type. */
-	( const int8_t * ) "readfromserver:\r\n To Read From BLE in Server Mode \r\n\r\n",
-	CLI_ESPReadFromBleServerModeCommand, /* The function to run. */
-	0 /* zero parameters are expected. */
+    (const int8_t *)"readfromserver", /* Command string to type */
+    (const int8_t *)"readfromserver:\r\n To Read From BLE in Server Mode \r\n\r\n",
+    CLI_ESPReadFromBleServerModeCommand, /* Function to execute */
+    0 /* Zero parameters expected */
 };
 
-/***************************************************************************/
-/* CLI command structure : To Write From Ble in Server Mode  */
+/* CLI command structure: Write to BLE in Server Mode */
 const CLI_Command_Definition_t CLI_ESPWriteFromBleServerModeCommandDefinition = {
-	( const int8_t * ) "writetoserver", /* The command string to type. */
-	( const int8_t * ) "writetoserver:\r\n To Write From BLE in Server Mode \r\n\r\n",
-	CLI_ESPWriteToBleServerModeCommand, /* The function to run. */
-	1 /* One parameters are expected. */
+    (const int8_t *)"writetoserver", /* Command string to type */
+    (const int8_t *)"writetoserver:\r\n To Write From BLE in Server Mode \r\n\r\n",
+    CLI_ESPWriteToBleServerModeCommand, /* Function to execute */
+    1 /* One parameter expected */
 };
 
-/***************************************************************************/
-/* CLI command structure : To Read From Ble in Client Mode  */
+/* CLI command structure: Read from BLE in Client Mode */
 const CLI_Command_Definition_t CLI_ESPReadFromBleClientModeCommandDefinition = {
-	( const int8_t * ) "readfromclient", /* The command string to type. */
-	( const int8_t * ) "readfromclient:\r\n To Read From BLE in Client Mode \r\n\r\n",
-	CLI_ESPReadFromBleClientModeCommand, /* The function to run. */
-	0 /* zero parameters are expected. */
+    (const int8_t *)"readfromclient", /* Command string to type */
+    (const int8_t *)"readfromclient:\r\n To Read From BLE in Client Mode \r\n\r\n",
+    CLI_ESPReadFromBleClientModeCommand, /* Function to execute */
+    0 /* Zero parameters expected */
 };
 
-/***************************************************************************/
-/* CLI command structure : To Write From Ble in Client Mode  */
+/* CLI command structure: Write to BLE in Client Mode */
 const CLI_Command_Definition_t CLI_ESPWriteFromBleclientModeCommandDefinition = {
-	( const int8_t * ) "writetoclient", /* The command string to type. */
-	( const int8_t * ) "writetoclient:\r\n To Write From BLE in Client Mode \r\n\r\n",
-	CLI_ESPWriteToBleClientModeCommand, /* The function to run. */
-	1 /* One parameters are expected. */
+    (const int8_t *)"writetoclient", /* Command string to type */
+    (const int8_t *)"writetoclient:\r\n To Write From BLE in Client Mode \r\n\r\n",
+    CLI_ESPWriteToBleClientModeCommand, /* Function to execute */
+    1 /* One parameter expected */
 };
+
 
 /***************************************************************************/
 /************************ Private function Definitions *********************/
@@ -567,122 +558,123 @@ void Module_Peripheral_Init(void) {
 }
 
 /***************************************************************************/
-/* H21R2 message processing task */
+
+/*
+ * @brief: Processes messages for the H21R2 module.
+ * @param code: Message code to process.
+ * @param port: Port number receiving the message.
+ * @param src: Source module ID.
+ * @param dst: Destination module ID.
+ * @param shift: Offset in the message buffer.
+ * @retval: Module status indicating success or error.
+ */
 Module_Status Module_MessagingTask(uint16_t code, uint8_t port, uint8_t src, uint8_t dst, uint8_t shift) {
-	Module_Status result = H21R2_OK;
+    Module_Status result = H21R2_OK; /* Initialize status to success */
+    char ServerName2[Length2]; /* Buffer for second server name */
+    char ServerName[Length1]; /* Buffer for server name */
+    char ClientName[Length1]; /* Buffer for client name */
+    char Accessspoint[Length1]; /* Buffer for WiFi access point name */
+    char Station[Length1]; /* Buffer for WiFi station name */
+    char Password[Length2]; /* Buffer for password */
+    char Data2[20]; /* Buffer for read data */
+    char Data[Length1]; /* Buffer for write data */
+    uint8_t SendData[Length1 + 2]; /* Buffer for sending data */
+    uint16_t module = 0; /* Module ID for message forwarding */
 
-	char ServerName2 [Length2];
-	char ServerName [Length1];
-	char ClientName [Length1];
-	char Accessspoint [Length1];
-	char Station [Length1];
-	char Password [Length2];
-	char Data2 [20];
-	char Data [Length1];
-	uint8_t SendData [Length1 + 2];
-	uint16_t module;
+    switch (code) { /* Process message based on code */
+    case CODE_H21R2_ESP_BOOT: /* ESP Boot command */
+        ESP_Boot(); /* Trigger ESP32 boot */
+        break;
+    case CODE_H21R2_ESP_RESET: /* ESP Reset command */
+        ESP_Reset(); /* Reset ESP32 */
+        break;
+    case CODE_H21R2_ESP_SERVER: /* Set BLE server mode */
+        Length1 = (uint16_t)cMessage[port - 1][shift]; /* Get server name length */
+        memcpy(ServerName, &cMessage[port - 1][1 + shift], Length1); /* Copy server name */
+        BLE_ServerMode(ServerName); /* Initialize BLE server mode */
+        break;
+    case CODE_H21R2_ESP_CLIENT: /* Set BLE client mode */
+        Length1 = (uint16_t)cMessage[port - 1][shift]; /* Get client name length */
+        Length2 = (uint16_t)cMessage[port - 1][1 + shift]; /* Get server name length */
+        memcpy(ClientName, &cMessage[port - 1][2 + shift], Length1); /* Copy client name */
+        memcpy(ServerName2, &cMessage[port - 1][Length1 + 2 + shift], Length2); /* Copy server name */
+        BLE_ClientMode(ClientName, ServerName2); /* Initialize BLE client mode */
+        break;
+    case CODE_H21R2_ESP_ACCESS_POINT: /* Set WiFi access point mode */
+        Length1 = (uint16_t)cMessage[port - 1][shift]; /* Get access point name length */
+        Length2 = (uint16_t)cMessage[port - 1][1 + shift]; /* Get password length */
+        memcpy(Accessspoint, &cMessage[port - 1][2 + shift], Length1); /* Copy access point name */
+        memcpy(Password, &cMessage[port - 1][Length1 + 2 + shift], Length2); /* Copy password */
+        WIFI_AccessPoint(Accessspoint, Password); /* Initialize WiFi access point */
+        break;
+    case CODE_H21R2_ESP_STATION: /* Set WiFi station mode */
+        Length1 = (uint16_t)cMessage[port - 1][shift]; /* Get station name length */
+        Length2 = (uint16_t)cMessage[port - 1][1 + shift]; /* Get password length */
+        memcpy(Station, &cMessage[port - 1][2 + shift], Length1); /* Copy station name */
+        memcpy(Password, &cMessage[port - 1][Length1 + 2 + shift], Length2); /* Copy password */
+        WIFI_Station(Station, Password); /* Initialize WiFi station mode */
+        break;
+    case CODE_H21R2_ESP_WRITE_TO_SERVER: /* Write to BLE server */
+        Length1 = (uint16_t)cMessage[port - 1][shift]; /* Get data length */
+        memcpy(Data, &cMessage[port - 1][1 + shift], Length1); /* Copy data */
+        SendData[0] = WRITE_TO_SERVER_MODE; /* Set command code */
+        SendData[1] = Length1; /* Set data length */
+        memcpy(&SendData[2], Data, Length1); /* Copy data to send buffer */
+        if (1 == FullData[0]) { /* Check if buffer is ready */
+            HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, Length1 + 2, 0xff); /* Transmit data */
+            FullData[0] = 0; /* Clear buffer ready flag */
+    }
+        break;
+    case CODE_H21R2_ESP_WRITE_TO_CLIENT: /* Write to BLE client */
+        Length1 = (uint16_t)cMessage[port - 1][shift]; /* Get data length */
+        memcpy(Data, &cMessage[port - 1][1 + shift], Length1); /* Copy data */
+        SendData[0] = WRITE_TO_CLIENT_MODE; /* Set command code */
+        SendData[1] = Length1; /* Set data length */
+        memcpy(&SendData[2], Data, Length1); /* Copy data to send buffer */
+        if (1 == FullData[0]) { /* Check if buffer is ready */
+            HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, Length1 + 2, 0xff); /* Transmit data */
+            FullData[0] = 0; /* Clear buffer ready flag */
+        }
+        break;
+    case CODE_H21R2_ESP_READ_FROM_SERVER: /* Read from BLE server */
+        module = (uint16_t)cMessage[port - 1][shift]; /* Get module ID */
+        BLE_Read(Data2, SERVER); /* Read data from BLE server */
+        memcpy(MessageParams, Data2, 20); /* Copy read data to message parameters */
+        SendMessageToModule(module, CODE_PORT_FORWARD, 20); /* Forward data to module */
+        break;
+    case CODE_H21R2_ESP_READ_FROM_CLIENT: /* Read from BLE client */
+        module = (uint16_t)cMessage[port - 1][shift]; /* Get module ID */
+        BLE_Read(Data2, CLIENT); /* Read data from BLE client */
+        memcpy(MessageParams, Data2, 20); /* Copy read data to message parameters */
+        SendMessageToModule(module, CODE_PORT_FORWARD, 20); /* Forward data to module */
+        break;
+    default: /* Unknown message code */
+        result = H21R2_ERR_UNKNOWNMESSAGE; /* Set error status for unknown message */
+        break;
+    }
 
-	switch (code) {
-	case CODE_H21R2_ESP_BOOT:
-		ESP_Boot();
-		break;
-
-	case CODE_H21R2_ESP_RESET:
-		ESP_Reset();
-		break;
-
-	case CODE_H21R2_ESP_SERVER:
-		Length1 = (uint16_t) cMessage [port - 1] [shift];
-		memcpy(ServerName, &cMessage [port - 1] [1 + shift], Length1);
-		BLE_ServerMode(ServerName);
-		break;
-
-	case CODE_H21R2_ESP_CLIENT:
-		Length1 = (uint16_t) cMessage [port - 1] [shift];
-		Length2 = (uint16_t) cMessage [port - 1] [1 + shift];
-		memcpy(ClientName, &cMessage [port - 1] [2 + shift], Length1);
-		memcpy(ServerName2, &cMessage [port - 1] [Length1 + 2 + shift], Length2);
-		BLE_ClientMode(ClientName, ServerName2);
-		break;
-
-	case CODE_H21R2_ESP_ACCESS_POINT:
-		Length1 = (uint16_t) cMessage [port - 1] [shift];
-		Length2 = (uint16_t) cMessage [port - 1] [1 + shift];
-		memcpy(Accessspoint, &cMessage [port - 1] [2 + shift], Length1);
-		memcpy(Password, &cMessage [port - 1] [Length1 + 2 + shift], Length2);
-		WIFI_AccessPoint(Accessspoint, Password);
-		break;
-
-	case CODE_H21R2_ESP_STATION:
-		Length1 = (uint16_t) cMessage [port - 1] [shift];
-		Length2 = (uint16_t) cMessage [port - 1] [1 + shift];
-		memcpy(Station, &cMessage [port - 1] [2 + shift], Length1);
-		memcpy(Password, &cMessage [port - 1] [Length1 + 2 + shift], Length2);
-		WIFI_AccessPoint(Station, Password);
-		break;
-
-	case CODE_H21R2_ESP_WRITE_TO_SERVER:
-		Length1 = (uint16_t) cMessage [port - 1] [shift];
-		memcpy(Data, &cMessage [port - 1] [1 + shift], Length1);
-		SendData [0] = WRITE_TO_SERVER_MODE;
-		SendData [1] = Length1;
-		memcpy(&SendData [2], Data, Length1);
-		if (1 == FullData [0]) {
-			HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, Length1 + 2, 0xff);
-			FullData [0] = 0;
-		}
-		break;
-
-	case CODE_H21R2_ESP_WRITE_TO_CLIENT:
-		Length1 = (uint16_t) cMessage [port - 1] [shift];
-		memcpy(Data, &cMessage [port - 1] [1 + shift], Length1);
-		SendData [0] = WRITE_TO_CLIENT_MODE;
-		SendData [1] = Length1;
-		memcpy(&SendData [2], Data, Length1);
-		if (1 == FullData [0]) {
-			HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, Length1 + 2, 0xff);
-			FullData [0] = 0;
-		}
-		break;
-
-	case CODE_H21R2_ESP_READ_FROM_SERVER:
-		module = (uint16_t) cMessage [port - 1] [shift];
-		BLE_Read(Data2, SERVER);
-		memcpy(MessageParams, Data2, 20);
-		SendMessageToModule(module, CODE_PORT_FORWARD, 20);
-		break;
-
-	case CODE_H21R2_ESP_READ_FROM_CLIENT:
-		module = (uint16_t) cMessage [port - 1] [shift];
-		BLE_Read(Data2, CLIENT);
-		memcpy(MessageParams, Data2, 20);
-		SendMessageToModule(module, CODE_PORT_FORWARD, 20);
-		break;
-
-	default:
-		result = H21R2_ERR_UNKNOWNMESSAGE;
-		break;
-	}
-
-	return result;
+    return result; /* Return status */
 }
 
 /***************************************************************************/
-/* Get the port for a given UART */
+/*
+ * @brief: Gets the port number for a given UART handle.
+ * @param huart: Pointer to UART handle.
+ * @retval: Port number or 0 if invalid.
+ */
 uint8_t GetPort(UART_HandleTypeDef *huart) {
+    if (huart->Instance == USART4) /* Check if UART is USART4 */
+        return P1; /* Return port 1 */
+    else if (huart->Instance == USART2) /* Check if UART is USART2 */
+        return P2; /* Return port 2 */
+    else if (huart->Instance == USART6) /* Check if UART is USART6 */
+        return P3; /* Return port 3 */
+    else if (huart->Instance == USART1) /* Check if UART is USART1 */
+        return P4; /* Return port 4 */
+    else if (huart->Instance == USART5) /* Check if UART is USART5 */
+        return P5; /* Return port 5 */
 
-	if (huart->Instance == USART4)
-		return P1;
-	else if (huart->Instance == USART2)
-		return P2;
-	else if (huart->Instance == USART6)
-		return P3;
-	else if (huart->Instance == USART1)
-		return P4;
-	else if (huart->Instance == USART5)
-		return P5;
-
-	return 0;
+    return 0; /* Return 0 for invalid UART */
 }
 
 /***************************************************************************/
@@ -723,328 +715,408 @@ Module_Status GetModuleParameter(uint8_t paramIndex,float *value){
 /***************************************************************************/
 /***************************** General Functions ***************************/
 /***************************************************************************/
-/* Reset ESP32 MCU */
+
+/*
+ * @brief: Resets the ESP32 MCU.
+ * @retval: Module status indicating success or error.
+ */
 Module_Status ESP_Reset(void) {
-	Module_Status Status = H21R2_OK;
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
 
-	HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_RESET);
-	HAL_Delay(5);
-	HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_SET);
-	HAL_Delay(1000);
+    /* Reset ESP32 by toggling reset pin */
+    HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_RESET); /* Set reset pin low */
+    HAL_Delay(5); /* Wait for 5 ms */
+    HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_SET); /* Set reset pin high */
+    HAL_Delay(1000); /* Wait for 1000 ms to complete reset */
 
-	return Status;
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
-/* Booting ESP32 MCU */
+/*
+ * @brief: Boots the ESP32 MCU.
+ * @retval: Module status indicating success or error.
+ */
 Module_Status ESP_Boot(void) {
-	Module_Status Status = H21R2_OK;
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
 
-	HAL_GPIO_WritePin(ESP32_BOOT_PORT, ESP32_BOOT_PIN, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_RESET);
-	HAL_Delay(100);
-	HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_SET);
-	HAL_Delay(100);
-	HAL_GPIO_WritePin(ESP32_BOOT_PORT, ESP32_BOOT_PIN, GPIO_PIN_SET);
+    /* Boot ESP32 by toggling boot and reset pins */
+    HAL_GPIO_WritePin(ESP32_BOOT_PORT, ESP32_BOOT_PIN, GPIO_PIN_RESET); /* Set boot pin low */
+    HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_RESET); /* Set reset pin low */
+    HAL_Delay(100); /* Wait for 100 ms */
+    HAL_GPIO_WritePin(ESP32_RST_PORT, ESP32_RST_PIN, GPIO_PIN_SET); /* Set reset pin high */
+    HAL_Delay(100); /* Wait for 100 ms */
+    HAL_GPIO_WritePin(ESP32_BOOT_PORT, ESP32_BOOT_PIN, GPIO_PIN_SET); /* Set boot pin high */
 
-	return Status;
+    return Status; /* Return success status */
 }
 
+
 /***************************************************************************/
-/* Initialize BLE CLIENT mode
- * ClientName: pointer to a ClientName
- * ServerName: pointer to a ServerName
+
+/*
+ * @brief: Initializes BLE client mode.
+ * @param ClientName: Pointer to client name string.
+ * @param ServerName: Pointer to server name string.
+ * @retval: Module status indicating success or error.
  */
 Module_Status BLE_ClientMode(char *ClientName, char *ServerName) {
-	Module_Status Status = H21R2_OK;
-	int LenClientName, LenServerName;
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
+    int LenClientName = 0; /* Length of client name */
+    int LenServerName = 0; /* Length of server name */
+    uint8_t Data[LenClientName + LenServerName + 3]; /* Buffer for data transmission */
 
-	UARTInitESP32();
+    /* Initialize UART for ESP32 */
+    UARTInitESP32(); /* Configure UART for ESP32 communication */
 
-	LenClientName = strlen(ClientName);
-	LenServerName = strlen(ServerName);
-	uint8_t Data [LenClientName + LenServerName + 3];
+    /* Calculate lengths of names */
+    LenClientName = strlen(ClientName); /* Get length of client name */
+    LenServerName = strlen(ServerName); /* Get length of server name */
 
-	Data [0] = CLIENT_MODE;
-	Data [1] = LenClientName;
-	Data [2] = LenServerName;
-	memcpy(&Data [3], ClientName, LenClientName);
-	memcpy(&Data [LenClientName + 3], ServerName, LenServerName);
-	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenClientName + LenServerName + 3, 0xff);
-	HAL_UART_Receive_DMA(ESP32_UART_HANDEL, FullData, ESP_PACKET_LENGTH);
+    /* Prepare data packet */
+    Data[0] = CLIENT_MODE; /* Set mode to BLE client */
+    Data[1] = LenClientName; /* Set client name length */
+    Data[2] = LenServerName; /* Set server name length */
+    memcpy(&Data[3], ClientName, LenClientName); /* Copy client name to buffer */
+    memcpy(&Data[LenClientName + 3], ServerName, LenServerName); /* Copy server name to buffer */
+    HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenClientName + LenServerName + 3, 0xff); /* Transmit data packet */
+    HAL_UART_Receive_DMA(ESP32_UART_HANDEL, FullData, ESP_PACKET_LENGTH); /* Start DMA receive for response */
 
-	return Status;
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
+
+/*
+ * @brief: Initializes BLE client mode via CLI.
+ * @param ClientName: Pointer to client name string.
+ * @param ServerName: Pointer to server name string.
+ * @param LenClientName: Length of client name.
+ * @param LenServerName: Length of server name.
+ * @retval: Module status indicating success or error.
+ */
 Module_Status BLE_ClientModeCLI(char *ClientName, char *ServerName, uint8_t LenClientName, uint8_t LenServerName) {
-	Module_Status Status = H21R2_OK;
-	uint8_t Data [LenClientName + LenServerName + 3];
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
+    uint8_t Data[LenClientName + LenServerName + 3]; /* Buffer for data transmission */
 
-	UARTInitESP32();
+    /* Initialize UART for ESP32 */
+    UARTInitESP32(); /* Configure UART for ESP32 communication */
 
-	Data [0] = CLIENT_MODE;
-	Data [1] = LenClientName;
-	Data [2] = LenServerName;
-	memcpy(&Data [3], ClientName, LenClientName);
-	memcpy(&Data [LenClientName + 3], ServerName, LenServerName);
-	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenClientName + LenServerName + 3, 0xff);
-	HAL_UART_Receive_DMA(ESP32_UART_HANDEL, FullData, ESP_PACKET_LENGTH);
+    /* Prepare data packet */
+    Data[0] = CLIENT_MODE; /* Set mode to BLE client */
+    Data[1] = LenClientName; /* Set client name length */
+    Data[2] = LenServerName; /* Set server name length */
+    memcpy(&Data[3], ClientName, LenClientName); /* Copy client name to buffer */
+    memcpy(&Data[LenClientName + 3], ServerName, LenServerName); /* Copy server name to buffer */
+    HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenClientName + LenServerName + 3, 0xff); /* Transmit data packet */
+    HAL_UART_Receive_DMA(ESP32_UART_HANDEL, FullData, ESP_PACKET_LENGTH); /* Start DMA receive for response */
 
-	return Status;
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
-/* Initialize BLE Server mode
- * ServerName: pointer to a ServerName
+/*
+ * @brief: Initializes BLE server mode.
+ * @param ServerName: Pointer to server name string.
+ * @retval: Module status indicating success or error.
  */
 Module_Status BLE_ServerMode(char *ServerName) {
-	Module_Status Status = H21R2_OK;
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
+    int LenServerName = 0; /* Length of server name */
+    uint8_t Data[LenServerName + 2]; /* Buffer for data transmission */
 
-	int LenServerName;
-	UARTInitESP32();
+    /* Initialize UART for ESP32 */
+    UARTInitESP32(); /* Configure UART for ESP32 communication */
 
-	LenServerName = strlen(ServerName);
-	uint8_t Data [LenServerName + 2];
+    /* Calculate server name length */
+    LenServerName = strlen(ServerName); /* Get length of server name */
 
-	Data [0] = SERVER_MODE;
-	Data [1] = LenServerName;
-	memcpy(&Data [2], ServerName, LenServerName);
-	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenServerName + 2, 0xff);
-	HAL_UART_Receive_DMA(ESP32_UART_HANDEL, FullData, ESP_PACKET_LENGTH);
+    /* Prepare data packet */
+    Data[0] = SERVER_MODE; /* Set mode to BLE server */
+    Data[1] = LenServerName; /* Set server name length */
+    memcpy(&Data[2], ServerName, LenServerName); /* Copy server name to buffer */
+    HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenServerName + 2, 0xff); /* Transmit data packet */
+    HAL_UART_Receive_DMA(ESP32_UART_HANDEL, FullData, ESP_PACKET_LENGTH); /* Start DMA receive for response */
 
-	return Status;
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
-/* To read from BLE in SERVER / client mode
- * Data: pointer to a Data
- * function: BLE_MODE
+/*
+ * @brief: Reads data from BLE in server or client mode.
+ * @param Data: Pointer to store read data.
+ * @param function: BLE mode (SERVER or CLIENT).
+ * @retval: Module status indicating success or error.
  */
 Module_Status BLE_Read(char *Data, BLE_MODE function) {
-	Module_Status Status = H21R2_OK;
-	uint8_t SendData;
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
+    uint8_t SendData; /* Variable for sending command */
 
-	switch (function) {
-	case SERVER:
-		if ('H' == FullData [0] && 'Z' == FullData [1])
-			memcpy(Data, &FullData [2], BLE_BUFF_SIZE);
-		break;
+    switch (function) { /* Check BLE mode */
+    case SERVER: /* Server mode */
+        if ('H' == FullData[0] && 'Z' == FullData[1]) /* Check for valid data marker */
+            memcpy(Data, &FullData[2], BLE_BUFF_SIZE); /* Copy data from buffer */
+        break;
+    case CLIENT: /* Client mode */
+        SendData = WRITE_FROM_CLIENT_MODE; /* Set command to write from client */
+        if (FullData[0] == 1) { /* Check if buffer is ready */
+            HAL_UART_Transmit(ESP32_UART_HANDEL, &SendData, 1, 0xff); /* Send command */
+            FullData[0] = 0; /* Clear buffer ready flag */
+        }
+        HAL_Delay(10); /* Wait for 10 ms */
+        if ('H' == FullData[0] && 'Z' == FullData[1]) { /* Check for valid data marker */
+            do {
+                memcpy(Data, &FullData[2], BLE_BUFF_SIZE); /* Copy data from buffer */
+            } while (FullData[0] != 1); /* Wait until buffer is ready again */
+            HAL_Delay(100); /* Wait for 100 ms */
+        }
+        break;
+    }
 
-	case CLIENT:
-		SendData = WRITE_FROM_CLIENT_MODE;
-		if (FullData [0] == 1) {
-			HAL_UART_Transmit(ESP32_UART_HANDEL, &SendData, 1, 0xff);
-			FullData [0] = 0;
-		}
-		HAL_Delay(10);
-		if ('H' == FullData [0] && 'Z' == FullData [1]) {
-			do {
-				memcpy(Data, &FullData [2], BLE_BUFF_SIZE);
-			} while (FullData [0] != 1);
-			HAL_Delay(100);
-		}
-		break;
-	}
-
-	return Status;
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
-/* To read from WIFI Socket mode
- * Data: pointer to a Data
+/*
+ * @brief: Reads data from WiFi socket mode.
+ * @param Data: Pointer to store read data.
+ * @retval: Module status indicating success or error.
  */
 Module_Status WIFI_SocketRead(char *Data) {
-	Module_Status Status = H21R2_ERROR;
-	Status = H21R2_OK;
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
 
-	if ('H' == wifiBuffer [0] && 'Z' == wifiBuffer [1])
-		memcpy(Data, &wifiBuffer [2], 126);
+    if ('H' == wifiBuffer[0] && 'Z' == wifiBuffer[1]) /* Check for valid data marker */
+        memcpy(Data, &wifiBuffer[2], 126); /* Copy data from WiFi buffer */
 
-	return Status;
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
-/* To Write from BLE in SERVER mode   To Write from BLE in clien mode
- * Data: pointer to a Data
- * function: BLE_MODE
- * Size: data sent size
+
+/*
+ * @brief: Writes data to BLE in server or client mode.
+ * @param Data: Pointer to data to write.
+ * @param function: BLE mode (SERVER or CLIENT).
+ * @param Size: Size of data to write.
+ * @retval: Module status indicating success or error.
  */
 Module_Status BLE_Write(char *Data, BLE_MODE function, uint16_t Size) {
-	Module_Status Status = H21R2_ERROR;
-	int LenData;
-	LenData = Size;
-	uint8_t SendData [LenData + 2];
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
+    int LenData = Size; /* Set data length */
+    uint8_t SendData[LenData + 2]; /* Buffer for sending data */
 
-	switch (function) {
-	case SERVER:
-		Status = H21R2_OK;
-		SendData [0] = WRITE_TO_SERVER_MODE;
-		SendData [1] = LenData;
-		memcpy(&SendData [2], Data, LenData);
-		if (FullData [0] == 1) {
-			HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, LenData + 2, 0xff);
-			FullData [0] = 0;
-		}
-		break;
+    switch (function) { /* Check BLE mode */
+    case SERVER: /* Server mode */
+        SendData[0] = WRITE_TO_SERVER_MODE; /* Set command to write to server */
+        SendData[1] = LenData; /* Set data length */
+        memcpy(&SendData[2], Data, LenData); /* Copy data to send buffer */
+        if (FullData[0] == 1) { /* Check if buffer is ready */
+            HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, LenData + 2, 0xff); /* Transmit data */
+            FullData[0] = 0; /* Clear buffer ready flag */
+        }
+        break;
+    case CLIENT: /* Client mode */
+        SendData[0] = WRITE_TO_CLIENT_MODE; /* Set command to write to client */
+        SendData[1] = LenData; /* Set data length */
+        memcpy(&SendData[2], Data, LenData); /* Copy data to send buffer */
+        if (FullData[0] == 1) { /* Check if buffer is ready */
+            HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, LenData + 2, 0xff); /* Transmit data */
+            FullData[0] = 0; /* Clear buffer ready flag */
+            do {
+                /* Wait for buffer to be ready */
+            } while (1 != FullData[0]); /* Loop until buffer is ready */
+        }
+        HAL_Delay(100); /* Wait for 100 ms */
+        break;
+    }
 
-	case CLIENT:
-		Status = H21R2_OK;
-		SendData [0] = WRITE_TO_CLIENT_MODE;
-		SendData [1] = LenData;
-		memcpy(&SendData [2], Data, LenData);
-		if (FullData [0] == 1) {
-			HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, LenData + 2, 0xff);
-			FullData [0] = 0;
-			do {
-
-			} while (1 != FullData [0]);
-		}
-		HAL_Delay(100);
-		break;
-	}
-
-	return Status;
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
-/* To write to  WIFI Socket mode
- * Data: pointer to a Data size
- * Size: data sent size
+
+/*
+ * @brief: Writes data to WiFi socket mode.
+ * @param Data: Pointer to data to write.
+ * @param Size: Size of data to write.
+ * @retval: Module status indicating success or error.
  */
 Module_Status WIFI_SocketWrite(char *Data, uint16_t Size) {
-	Module_Status Status = H21R2_OK;
-	int LenData;
-	LenData = Size;
-	uint8_t SendData [LenData + 2];
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
+    int LenData = Size; /* Set data length */
+    uint8_t SendData[LenData + 2]; /* Buffer for sending data */
 
-	SendData [0] = WRITE_SOCKET_MODE;
-	SendData [1] = LenData;
-	memcpy(&SendData [2], Data, LenData);
-	if (wifiBuffer[0] == 1) {
-		HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, LenData + 2, 0xff);
-		wifiBuffer [0] = 0;
-	}
+    /* Prepare data packet */
+    SendData[0] = WRITE_SOCKET_MODE; /* Set command to write to socket */
+    SendData[1] = LenData; /* Set data length */
+    memcpy(&SendData[2], Data, LenData); /* Copy data to send buffer */
+    if (wifiBuffer[0] == 1) { /* Check if WiFi buffer is ready */
+        HAL_UART_Transmit(ESP32_UART_HANDEL, SendData, LenData + 2, 0xff); /* Transmit data */
+        wifiBuffer[0] = 0; /* Clear buffer ready flag */
+    }
 
-	return Status;
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
-/* Initialize WIFI access point  mode
- * Ssid: pointer to a  Accesspoint name
- * Password: pointer to a  Password
+
+/*
+ * @brief: Initializes WiFi access point mode.
+ * @param Ssid: Pointer to access point name.
+ * @param Password: Pointer to password.
+ * @retval: Module status indicating success or error.
  */
 Module_Status WIFI_AccessPoint(char *Ssid, char *Password) {
-	Module_Status Status = H21R2_OK;
-	int LenSsid, LenPassword;
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
+    int LenSsid = 0; /* Length of SSID */
+    int LenPassword = 0; /* Length of password */
+    uint8_t Data[LenSsid + LenPassword + 3]; /* Buffer for data transmission */
 
-	UARTInitESP32();
+    /* Initialize UART for ESP32 */
+    UARTInitESP32(); /* Configure UART for ESP32 communication */
 
-	LenSsid = strlen(Ssid);
-	LenPassword = strlen(Password);
-	uint8_t Data [LenSsid + LenPassword + 3];
+    /* Calculate lengths */
+    LenSsid = strlen(Ssid); /* Get length of SSID */
+    LenPassword = strlen(Password); /* Get length of password */
 
-	Data [0] = WIFI_ACCESS_POINT_MODE;
-	Data [1] = LenSsid;
-	Data [2] = LenPassword;
-	memcpy(&Data [3], Ssid, LenSsid);
-	memcpy(&Data [LenSsid + 3], Password, LenPassword);
-	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff);
+    /* Prepare data packet */
+    Data[0] = WIFI_ACCESS_POINT_MODE; /* Set mode to WiFi access point */
+    Data[1] = LenSsid; /* Set SSID length */
+    Data[2] = LenPassword; /* Set password length */
+    memcpy(&Data[3], Ssid, LenSsid); /* Copy SSID to buffer */
+    memcpy(&Data[LenSsid + 3], Password, LenPassword); /* Copy password to buffer */
+    HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff); /* Transmit data packet */
 
-	return Status;
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
-/* Initialize WIFI Socket mode
- * Ssid: pointer to a  Accesspoint name
- * Password: pointer to a  Password
+
+/*
+ * @brief: Initializes WiFi socket mode.
+ * @param Ssid: Pointer to access point name.
+ * @param Password: Pointer to password.
+ * @retval: Module status indicating success or error.
  */
 Module_Status WIFI_Socket(char *Ssid, char *Password) {
-	Module_Status Status = H21R2_OK;
-	int LenSsid, LenPassword;
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
+    int LenSsid = 0; /* Length of SSID */
+    int LenPassword = 0; /* Length of password */
+    uint8_t Data[LenSsid + LenPassword + 3]; /* Buffer for data transmission */
 
-	UARTInitESP32();
+    /* Initialize UART for ESP32 */
+    UARTInitESP32(); /* Configure UART for ESP32 communication */
 
-	LenSsid = strlen(Ssid);
-	LenPassword = strlen(Password);
-	uint8_t Data [LenSsid + LenPassword + 3];
-	Data [0] = WIFI_SOCKET_MODE;
-	Data [1] = LenSsid;
-	Data [2] = LenPassword;
-	memcpy(&Data [3], Ssid, LenSsid);
-	memcpy(&Data [LenSsid + 3], Password, LenPassword);
-	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff);
-	HAL_UART_Receive_DMA(ESP32_UART_HANDEL, wifiBuffer, WIFI_BUFF_SIZE);
+    /* Calculate lengths */
+    LenSsid = strlen(Ssid); /* Get length of SSID */
+    LenPassword = strlen(Password); /* Get length of password */
 
-	return Status;
+    /* Prepare data packet */
+    Data[0] = WIFI_SOCKET_MODE; /* Set mode to WiFi socket */
+    Data[1] = LenSsid; /* Set SSID length */
+    Data[2] = LenPassword; /* Set password length */
+    memcpy(&Data[3], Ssid, LenSsid); /* Copy SSID to buffer */
+    memcpy(&Data[LenSsid + 3], Password, LenPassword); /* Copy password to buffer */
+    HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff); /* Transmit data packet */
+    HAL_UART_Receive_DMA(ESP32_UART_HANDEL, wifiBuffer, WIFI_BUFF_SIZE); /* Start DMA receive for response */
+
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
+/*
+ * @brief: Initializes WiFi access point mode via CLI.
+ * @param Ssid: Pointer to access point name.
+ * @param Password: Pointer to password.
+ * @param lenSsid: Length of SSID.
+ * @param lenPassword: Length of password.
+ * @retval: Module status indicating success or error.
+ */
 Module_Status WIFI_AccessPointCLI(char *Ssid, char *Password, uint8_t lenSsid, uint8_t lenPassword) {
-	Module_Status Status = H21R2_OK;
-	uint8_t Data [lenSsid + lenPassword + 3];
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
+    uint8_t Data[lenSsid + lenPassword + 3]; /* Buffer for data transmission */
 
-	ESP_Boot();
-	ESP_Reset();
+    /* Prepare ESP32 for operation */
+    ESP_Boot(); /* Boot ESP32 */
+    ESP_Reset(); /* Reset ESP32 */
 
-	UARTInitESP32();
+    /* Initialize UART for ESP32 */
+    UARTInitESP32(); /* Configure UART for ESP32 communication */
 
-	Data [0] = WIFI_ACCESS_POINT_MODE;
-	Data [1] = lenSsid;
-	Data [2] = lenPassword;
-	memcpy(&Data [3], Ssid, lenSsid);
-	memcpy(&Data [lenSsid + 3], Password, lenPassword);
-	HAL_Delay(1000);
-	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, lenSsid + lenPassword + 3, 0xff);
+    /* Prepare data packet */
+    Data[0] = WIFI_ACCESS_POINT_MODE; /* Set mode to WiFi access point */
+    Data[1] = lenSsid; /* Set SSID length */
+    Data[2] = lenPassword; /* Set password length */
+    memcpy(&Data[3], Ssid, lenSsid); /* Copy SSID to buffer */
+    memcpy(&Data[lenSsid + 3], Password, lenPassword); /* Copy password to buffer */
+    HAL_Delay(1000); /* Wait for 1000 ms */
+    HAL_UART_Transmit(ESP32_UART_HANDEL, Data, lenSsid + lenPassword + 3, 0xff); /* Transmit data packet */
 
-	return Status;
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
-/* Initialize WIFI Station mode
- * Ssid: pointer to a  Station  name
- * Password: pointer to a  Password
+
+/*
+ * @brief: Initializes WiFi station mode.
+ * @param Ssid: Pointer to station name.
+ * @param Password: Pointer to password.
+ * @retval: Module status indicating success or error.
  */
 Module_Status WIFI_Station(char *Ssid, char *Password) {
-	Module_Status Status = H21R2_OK;
-	int LenSsid, LenPassword;
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
+    int LenSsid = 0; /* Length of SSID */
+    int LenPassword = 0; /* Length of password */
+    uint8_t Data[LenSsid + LenPassword + 3]; /* Buffer for data transmission */
 
-	UARTInitESP32();
+    /* Initialize UART for ESP32 */
+    UARTInitESP32(); /* Configure UART for ESP32 communication */
 
-	LenSsid = strlen(Ssid);
-	LenPassword = strlen(Password);
-	uint8_t Data [LenSsid + LenPassword + 3];
-	Data [0] = WIFI_STATION_MODE;
-	Data [1] = LenSsid;
-	Data [2] = LenPassword;
-	memcpy(&Data [3], Ssid, LenSsid);
-	memcpy(&Data [LenSsid + 3], Password, LenPassword);
-	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff);
+    /* Calculate lengths */
+    LenSsid = strlen(Ssid); /* Get length of SSID */
+    LenPassword = strlen(Password); /* Get length of password */
 
-	return Status;
+    /* Prepare data packet */
+    Data[0] = WIFI_STATION_MODE; /* Set mode to WiFi station */
+    Data[1] = LenSsid; /* Set SSID length */
+    Data[2] = LenPassword; /* Set password length */
+    memcpy(&Data[3], Ssid, LenSsid); /* Copy SSID to buffer */
+    memcpy(&Data[LenSsid + 3], Password, LenPassword); /* Copy password to buffer */
+    HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff); /* Transmit data packet */
+
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
+
+/*
+ * @brief: Initializes WiFi station mode via CLI.
+ * @param Ssid: Pointer to station name.
+ * @param Password: Pointer to password.
+ * @param lenSsid: Length of SSID.
+ * @param lenPassword: Length of password.
+ * @retval: Module status indicating success or error.
+ */
 Module_Status WIFI_StationCLI(char *Ssid, char *Password, uint8_t lenSsid, uint8_t lenPassword) {
-	Module_Status Status = H21R2_OK;
-	int LenSsid, LenPassword;
+    Module_Status Status = H21R2_OK; /* Initialize status to success */
+    uint8_t Data[lenSsid + lenPassword + 3]; /* Buffer for data transmission */
 
-	ESP_Boot();
-	ESP_Reset();
+    /* Prepare ESP32 for operation */
+    ESP_Boot(); /* Boot ESP32 */
+    ESP_Reset(); /* Reset ESP32 */
 
-	UARTInitESP32();
+    /* Initialize UART for ESP32 */
+    UARTInitESP32(); /* Configure UART for ESP32 communication */
 
-	LenSsid = lenSsid;
-	LenPassword = lenPassword;
-	uint8_t Data [LenSsid + LenPassword + 3];
-	Data [0] = WIFI_STATION_MODE;
-	Data [1] = LenSsid;
-	Data [2] = LenPassword;
-	memcpy(&Data [3], Ssid, LenSsid);
-	memcpy(&Data [LenSsid + 3], Password, LenPassword);
-	HAL_UART_Transmit(ESP32_UART_HANDEL, Data, LenSsid + LenPassword + 3, 0xff);
+    /* Prepare data packet */
+    Data[0] = WIFI_STATION_MODE; /* Set mode to WiFi station */
+    Data[1] = lenSsid; /* Set SSID length */
+    Data[2] = lenPassword; /* Set password length */
+    memcpy(&Data[3], Ssid, lenSsid); /* Copy SSID to buffer */
+    memcpy(&Data[lenSsid + 3], Password, lenPassword); /* Copy password to buffer */
+    HAL_UART_Transmit(ESP32_UART_HANDEL, Data, lenSsid + lenPassword + 3, 0xff); /* Transmit data packet */
 
-	return Status;
+    return Status; /* Return success status */
 }
 
 /***************************************************************************/
