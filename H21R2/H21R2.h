@@ -1,5 +1,5 @@
 /*
- BitzOS (BOS) V0.3.6 - Copyright (C) 2017-2024 Hexabitz
+ BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
  
  File Name     : H21R2.h
@@ -10,14 +10,13 @@
 >>
 >>
 >>
-
  */
 
-/* Define to prevent recursive inclusion -------------------------------------*/
+/* Define to prevent recursive inclusion ***********************************/
 #ifndef H21R2_H
 #define H21R2_H
 
-/* Includes ------------------------------------------------------------------*/
+/* Includes ****************************************************************/
 #include "BOS.h"
 #include "H21R2_MemoryMap.h"
 #include "H21R2_uart.h"
@@ -25,39 +24,36 @@
 #include "H21R2_dma.h"
 #include "H21R2_inputs.h"
 #include "H21R2_eeprom.h"
-/* Exported definitions -------------------------------------------------------*/
 
-#define	modulePN		_H21R2
+/* Exported Macros *********************************************************/
+#define	MODULE_PN		_H21R2
 
+/* Port-related Definitions */
+#define	NUM_OF_PORTS	5
+#define P_PROG 			P2		/* ST factory bootloader UART */
 
-/* Port-related definitions */
-#define	NumOfPorts			5
+/* Define Available Ports */
+#define _P1
+#define _P2
+#define _P3
+#define _P4
+#define _P5
 
-#define P_PROG 				P2						/* ST factory bootloader UART */
-
-/* Define available ports */
-#define _P1 
-#define _P2 
-#define _P3 
-#define _P4 
-#define _P5 
-
-/* Define available USARTs */
-#define _Usart1 1
-#define _Usart2 1
-#define _Usart4 1
-#define _Usart5 1
-#define _Usart6	1
-
+/* Define Available USARTs */
+#define _USART1
+#define _USART2
+#define _USART4
+#define _USART5
+#define _USART6
 
 /* Port-UART mapping */
+#define UART_P1 &huart4
+#define UART_P2 &huart2
+#define UART_P3 &huart6
+#define UART_P4 &huart1
+#define UART_P5 &huart5
 
-#define P1uart &huart4
-#define P2uart &huart2
-#define P3uart &huart6
-#define P4uart &huart1
-#define P5uart &huart5
-
+/* Module-specific Hardware Definitions ************************************/
 /* Port Definitions */
 #define	USART1_TX_PIN		GPIO_PIN_9
 #define	USART1_RX_PIN		GPIO_PIN_10
@@ -89,27 +85,28 @@
 #define	USART6_RX_PORT		GPIOA
 #define	USART6_AF			GPIO_AF8_USART6
 
-/* Module-specific Definitions */
+/* ESP32 UART Pin Definitions */
+#define ESP32_UART_RX_PIN      GPIO_PIN_9
+#define ESP32_UART_TX_PIN      GPIO_PIN_8
+#define ESP32_UART_PORT        GPIOB
+#define ESP32_UART_HANDEL      &huart3
+#define ESP32_UART_DMA_HANDLER &hdma_usart3_rx
+
+/* ESP32 GPIO Pin Definitions */
+#define ESP32_BOOT_PIN      GPIO_PIN_13
+#define ESP32_BOOT_PORT     GPIOC
+#define ESP32_RST_PIN       GPIO_PIN_0
+#define ESP32_RST_PORT      GPIOD
 
 /* Indicator LED */
-#define _IND_LED_PORT			GPIOB
-#define _IND_LED_PIN			GPIO_PIN_14
+#define _IND_LED_PORT	    GPIOB
+#define _IND_LED_PIN		GPIO_PIN_14
 
-#define NUM_MODULE_PARAMS		1
-
-/* Module GPIO Pinout */
-#define ESP32_BOOT_PIN         GPIO_PIN_13
-#define ESP32_BOOT_PORT        GPIOC
-#define ESP32_RST_PIN          GPIO_PIN_0
-#define ESP32_RST_PORT         GPIOD
-#define ESP32_UART_HANDEL      huart3
-#define USART3_RX_Pin          GPIO_PIN_9
-#define USART3_TX_Pin          GPIO_PIN_8
-/* Module special parameters */
-#define SIZEBUF                    22
-#define SIZEBLEBUFF                20
-#define SIZEWIFIBUFF               128
-
+/* Module-specific Macro Definitions ***************************************/
+#define NUM_MODULE_PARAMS	       1
+#define ESP_PACKET_LENGTH          22
+#define BLE_BUFF_SIZE              20
+#define WIFI_BUFF_SIZE             128
 #define CLIENT_MODE                1
 #define SERVER_MODE                2
 #define WIFI_ACCESS_POINT_MODE     3
@@ -120,24 +117,21 @@
 #define WIFI_SOCKET_MODE           8
 #define WRITE_SOCKET_MODE          9
 
-
-/* Module EEPROM Variables */
-// Module Addressing Space 500 - 599
-#define _EE_MODULE							500		
-
-/* Module_Status Type Definition */
+/* Module-specific Type Definition *****************************************/
+/* Module-status Type Definition */
 typedef enum {
 	H21R2_OK =0,
-	H21R2_ERR_UnknownMessage,
-	H21R2_ERR_WrongParams,
+	H21R2_ERR_UNKNOWNMESSAGE,
+	H21R2_ERR_WRONGPARAMS,
 	H21R2_ERROR =255
 } Module_Status;
 
+/* Connection Type */
 typedef enum {
-	server=0,
-	client,
-
+	SERVER=0,
+	CLIENT,
 }BLE_MODE;
+
 /* Export UART variables */
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
@@ -154,32 +148,24 @@ extern void MX_USART4_UART_Init(void);
 extern void MX_USART5_UART_Init(void);
 extern void MX_USART6_UART_Init(void);
 extern void SystemClock_Config(void);
-extern void ExecuteMonitor(void);
 
-/* -----------------------------------------------------------------------
- |								  APIs							          |  																 	|
-/* -----------------------------------------------------------------------
- */
-
-void SetupPortForRemoteBootloaderUpdate(uint8_t port);
-void remoteBootloaderUpdate(uint8_t src,uint8_t dst,uint8_t inport,uint8_t outport);
+/***************************************************************************/
+/***************************** General Functions ***************************/
+/***************************************************************************/
 Module_Status ESP_Reset(void);
 Module_Status ESP_Boot(void);
+
 Module_Status BLE_ClientMode(char* Client_Name,char* Server_Name);
 Module_Status BLE_ServerMode(char* ServerName);
 Module_Status BLE_Read(char * Data,BLE_MODE function);
 Module_Status BLE_Write(char* Data,BLE_MODE function ,uint16_t Size);
+
 Module_Status WIFI_AccessPoint(char* Ssid,char* Password);
 Module_Status WIFI_Station(char* Ssid,char* Password);
 Module_Status WIFI_Socket(char* Ssid,char* Password);
 Module_Status WIFI_SocketWrite(char * Data , uint16_t Size) ;
 Module_Status WIFI_SocketRead(char * Data);
-/* -----------------------------------------------------------------------
- |								Commands							      |															 	|
-/* -----------------------------------------------------------------------
- */
-
 
 #endif /* H21R2_H */
 
-/************************ (C) COPYRIGHT HEXABITZ *****END OF FILE****/
+/***************** (C) COPYRIGHT HEXABITZ ***** END OF FILE ****************/
