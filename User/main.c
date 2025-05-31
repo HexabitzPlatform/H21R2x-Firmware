@@ -1,48 +1,39 @@
 /*
- BitzOS (BOS) V0.3.6 - Copyright (C) 2017-2024 Hexabitz
+ BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
  File Name     : main.c
  Description   : Main program body.
  */
-/* Includes ------------------------------------------------------------------*/
+
+/* Includes ****************************************************************/
 #include "BOS.h"
 
-/* Private variables ---------------------------------------------------------*/
+/* Private variables *******************************************************/
 
-/* Private function prototypes -----------------------------------------------*/
+/* Private Function Prototypes *********************************************/
 
-/* Main function ------------------------------------------------------------*/
-
+/* Main Function ***********************************************************/
 int main(void){
 
-	Module_Init();		//Initialize Module &  BitzOS
+	/* Initialize Module &  BitzOS */
+	Module_Init();
 
-	//Don't place your code here.
-	for(;;){}
+	/* Don't place your code here */
+	for(;;){
+	}
 }
-uint32_t apb1ClockFreq, ahbClockFreq, systemClockFreq;
-/*-----------------------------------------------------------*/
+
+/***************************************************************************/
 /* User Task */
 void UserTask(void *argument){
-ESP_Boot();
-ESP_Reset();
-
-//	 put your code here, to run repeatedly.
+	ESP_Boot();
+	ESP_Reset();
+	/* put your code here, to run repeatedly. */
 	while(1){
-
-		// Get the APB1 peripheral clock frequency (used for peripherals like UART and TIMx in some cases)
-		 apb1ClockFreq = HAL_RCC_GetPCLK1Freq();
-
-		// Get the AHB clock frequency (HCLK), which is used for the CPU, memory, and other controllers
-		 ahbClockFreq = HAL_RCC_GetHCLKFreq();
-
-		// Get the system clock frequency (SYSCLK), which serves as the main clock source for the system
-		 systemClockFreq = HAL_RCC_GetSysClockFreq();
-
-
 
 	}
 }
 
-/*-----------------------------------------------------------*/
+/***************************************************************************/
+/***************** (C) COPYRIGHT HEXABITZ ***** END OF FILE ****************/
