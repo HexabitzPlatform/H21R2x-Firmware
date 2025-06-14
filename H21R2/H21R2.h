@@ -1,16 +1,14 @@
 /*
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
- 
- File Name     : H21R2.h
- Description   : Header file for module H21R2.
- 	 	 	 	 (Description_of_module)
 
-(Description of Special module peripheral configuration):
->>
->>
->>
- */
+ File Name  : H21R2.h
+ Description: Header for ESP32 wireless communication module.
+ Hardware: UART1-6, GPIO configurations for ESP32 control.
+ Protocols: BLE (Server/Client), WiFi (Station/Access Point).
+ Ports: 5 communication ports with UART-DMA mapping.
+ Special Config: High-speed ESP32 UART (921600 baud) on USART3.
+*/
 
 /* Define to prevent recursive inclusion ***********************************/
 #ifndef H21R2_H

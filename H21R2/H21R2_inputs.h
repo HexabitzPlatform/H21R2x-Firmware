@@ -2,9 +2,10 @@
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H21R2_inputs.h
- Description   : header file for Bitz digital and analog inputs.
- 
+ File Name  : H21R2_inputs.h
+ Description: Digital/analog inputs configuration.
+ ADC: Channel definitions, calibration constants.
+ Functions: Read ADC channels, temperature, voltage reference.
 */
 
 /* Includes ****************************************************************/

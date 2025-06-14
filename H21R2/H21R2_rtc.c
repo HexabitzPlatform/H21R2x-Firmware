@@ -2,10 +2,11 @@
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H21R2_rtc.c
- Description   : Peripheral RTC setup source file.
-
- */
+ File Name  : H21R2_rtc.c
+ Description: Real-Time Clock configuration and management.
+ RTC: Initialize, set/get time/date, 12/24-hour format.
+ Calendar: Compile-time or user-defined initialization.
+*/
 
 /* Includes ****************************************************************/
 #include "BOS.h"

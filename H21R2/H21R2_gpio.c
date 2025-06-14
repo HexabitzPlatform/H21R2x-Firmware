@@ -2,10 +2,11 @@
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H0BR4_gpio.c
- Description   : Source code provides code for the configuration of all used GPIO pins .
-
- */
+ File Name  : H0BR4_gpio.c
+ Description: GPIO configuration and factory reset management.
+ GPIO: Initialize all used pins, configure indicator LED.
+ Factory Reset: Check P1 TX to last port RX connection.
+*/
 
 /* Includes ****************************************************************/
 #include "BOS.h"

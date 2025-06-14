@@ -2,15 +2,11 @@
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H21R2_timers.c
- Description   : Peripheral timers setup source file.
-
- Required MCU resources :
-
- >> Timer 14 for micro-sec delay.
- >> Timer 15 for milli-sec delay.
-
- */
+ File Name  : H21R2_timers.c
+ Description: Timers and watchdog configuration.
+ Timers: TIM16 (µs delays), TIM17 (ms delays).
+ IWDG: Watchdog with 500ms timeout.
+*/
 
 /* Includes ****************************************************************/
 #include "BOS.h"

@@ -1,9 +1,11 @@
- /*
+/*
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H21R2_eeprom.h
- Description   : EEPROM emulator library (Header file).
+ File Name  : H21R2_eeprom.h
+ Description: Header file for EEPROM emulation library.
+ Features: Defines EEPROM emulation structure for 1000 16-bit variables using 4 flash pages with backup, specifies virtual address mappings for BOS and module data, and declares function prototypes for EEPROM operations.
+ EEPROM Emulation: Stores 1000 8-byte elements (32-bit data, 16-bit CRC, 16-bit virtual address) with group swapping for reliable storage.
 
  * EEPROM Emulation Description:
  * -----------------------------

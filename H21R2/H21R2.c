@@ -2,15 +2,13 @@
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H21R2.c
- Description   : Source code for module H21R2.
- 	 	 	 	 (Description_of_module)
-
-(Description of Special module peripheral configuration):
->>
->>
->>
- */
+ File Name  : H21R2.c
+ Description: Main module file for ESP32 wireless communication.
+ ESP32: Manages BLE (Server/Client) and WiFi (Station/Access Point) modes.
+ CLI: Commands for ESP32 control (reset, boot, mode configuration).
+ Messaging: Handles wireless communication protocols and data transfer.
+ Special Config: UART3 for high-speed ESP32 communication (921600 baud).
+*/
 
 /* Includes ****************************************************************/
 #include "BOS.h"

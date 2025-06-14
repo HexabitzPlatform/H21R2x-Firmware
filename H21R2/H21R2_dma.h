@@ -1,11 +1,12 @@
 /*
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
- 
- File Name     : H21R2_dma.h
- Description   : Header file contains Peripheral DMA setup.
 
- */
+ File Name  : H21R2_dma.h
+ Description: Header file for peripheral DMA configuration.
+ Features: Declares DMA-related variables, macros, and function prototypes for UART messaging/streaming and CRC8 calculation.
+ Exports: DMA initialization, setup, stop, mode switching functions, and CRC8 calculation for data integrity.
+*/
 
 /* Define to prevent recursive inclusion ***********************************/
 #ifndef H0BR4_dma_H

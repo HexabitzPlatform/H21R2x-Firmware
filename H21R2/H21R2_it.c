@@ -2,10 +2,11 @@
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H21R2_it.c
- Description   :Interrupt Service Routines.
-
- */
+ File Name  : H21R2_it.c
+ Description: Interrupt handlers for system and peripherals.
+ Interrupts: System tick, Hard Fault, UART (USART1-6), DMA (Ch1-7).
+ Callbacks: UART Rx/Tx events, error handling, stack/heap monitoring.
+*/
 
 /* Includes ****************************************************************/
 #include "BOS.h"

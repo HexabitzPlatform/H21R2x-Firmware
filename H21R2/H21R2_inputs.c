@@ -2,10 +2,11 @@
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H21R2_inputs.c
- Description   : Source code for Bitz digital and analog inputs.
-
- */
+ File Name  : H21R2_inputs.c
+ Description: Digital and analog inputs management.
+ Buttons: Add/remove, detect events (press, release, click).
+ ADC: Configure and read channels (Ports 2-3), temperature/Vref.
+*/
 
 /* Includes ****************************************************************/
 #include "H21R2_inputs.h"

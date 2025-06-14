@@ -2,10 +2,11 @@
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H21R2_dma.c
- Description   : source file Contains Peripheral DMA setup .
-
- */
+ File Name  : H21R2_dma.c
+ Description: Source file for peripheral DMA configuration.
+ Features: Initializes DMA1-2, configures DMA channels for UART messaging and streaming, supports CRC8 calculation, and provides functions to switch between messaging and streaming modes.
+ Functions: DMA initialization, messaging/streaming DMA setup, DMA stop, mode switching, and CRC8 calculation for data integrity.
+*/
 
 /* Includes ****************************************************************/
 #include "BOS.h"

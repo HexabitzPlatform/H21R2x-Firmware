@@ -2,10 +2,12 @@
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H21R2_uart.c
- Description   : Source Code provides configuration for USART instances.
-
- */
+ File Name  : H21R2_uart.c
+ Description: UART configuration and communication management.
+ UART: Initialize USART1-6 with DMA, baudrate configuration.
+ Ports: Normal/reversed pin swapping, mutex-protected read/write.
+ ESP32: Special high-speed UART configuration.
+*/
 
 /* Includes ****************************************************************/
 #include "BOS.h"

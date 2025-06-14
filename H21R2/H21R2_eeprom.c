@@ -2,10 +2,11 @@
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H21R2_eeprom.c
- Description   : EEPROM emulator library (Source file).
-
- */
+ File Name  : H21R2_eeprom.c
+ Description: Source file for EEPROM emulation library.
+ Features: Emulates EEPROM using flash memory, supports storage of 1000 16-bit variables across 4 flash pages with backup, provides functions for initialization, read/write operations, formatting, and sector erasure.
+ Functions: EEPROM initialization, variable read/write, flash formatting, and sector erasure for factory reset support.
+*/
 
 /* Includes ****************************************************************/
 #include "BOS.h"

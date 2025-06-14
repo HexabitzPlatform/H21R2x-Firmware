@@ -2,11 +2,10 @@
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H21R2_gpio.h
- Description   : Header file contains all the functions prototypes for
- the GPIO .
-
- */
+ File Name  : H21R2_gpio.h
+ Description: GPIO functions prototypes.
+ Functions: Port initialization, indicator LED, factory reset check.
+*/
 
 
 /* Define to prevent recursive inclusion ***********************************/

@@ -2,10 +2,15 @@
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
 
- File Name     : H21R2_uart.h
- Description   : Header file provides configuration for USART instances.
- */
+ File Name  : H21R2_uart.h
+ Description: UART communication interface.
+ Functions: Mutex-protected read/write (blocking/interrupt).
+ Ports: Direction management for topology configuration.
+*/
 
+/* Define to prevent recursive inclusion */
+#ifndef __usart_H
+#define __usart_H
 /* Define to prevent recursive inclusion ***********************************/
 #ifndef __usart_H
 #define __usart_H

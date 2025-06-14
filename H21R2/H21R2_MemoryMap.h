@@ -1,11 +1,12 @@
 /*
  BitzOS (BOS) V0.4.0 - Copyright (C) 2017-2025 Hexabitz
  All rights reserved
- 
- File Name     : H21R2_MemoryMap.h
- Description   : Module MCU memory map header file.
 
- */
+ File Name  : H21R2_MemoryMap.h
+ Description: STM32G0B0 memory map configuration.
+ Flash: Application (500KB), Topology (2KB), Snippets (2KB), EEPROM (8KB).
+ Addresses: Defines start addresses for each memory section.
+*/
 
 /* Define to prevent recursive inclusion************************************/
 #ifndef H0BR4_MEMORYMAP_H
