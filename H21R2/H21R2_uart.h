@@ -8,9 +8,6 @@
  Ports: Direction management for topology configuration.
 */
 
-/* Define to prevent recursive inclusion */
-#ifndef __usart_H
-#define __usart_H
 /* Define to prevent recursive inclusion ***********************************/
 #ifndef __usart_H
 #define __usart_H
