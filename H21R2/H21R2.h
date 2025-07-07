@@ -81,7 +81,7 @@
 #define	USART6_RX_PIN		GPIO_PIN_5
 #define	USART6_TX_PORT		GPIOA
 #define	USART6_RX_PORT		GPIOA
-#define	USART6_AF			GPIO_AF8_USART6
+#define	USART6_AF			GPIO_AF3_USART6
 
 /* ESP32 UART Pin Definitions */
 #define ESP32_UART_RX_PIN      GPIO_PIN_9
